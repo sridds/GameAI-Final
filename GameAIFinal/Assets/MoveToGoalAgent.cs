@@ -15,7 +15,14 @@ public class MoveToGoalAgent : Agent
     public override void OnEpisodeBegin()
     {
         // reset the state for training again
-        transform.localPosition = new Vector3(0, 0.5f, 0);
+        transform.localPosition = new Vector3(
+            Random.Range(-3f, 3f),
+            0.5f,
+            Random.Range(-3f, 3f));
+        targetTransform.localPosition = new Vector3(
+            Random.Range(-3f, 3f),
+            0.5f,
+            Random.Range(-3f, 3f));
     }
 
     public override void CollectObservations(VectorSensor sensor)
