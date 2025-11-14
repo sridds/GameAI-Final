@@ -107,3 +107,6 @@ summaries/
 __pycache__/
 venv/
 .mypy_cache/
+
+Assets/Tests/
+
