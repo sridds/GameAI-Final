@@ -17,9 +17,3 @@ public class RaceManager : MonoBehaviour
 
     }
 }
-
-public class RacerIdentifier : ScriptableObject
-{
-    public Sprite Icon;
-    public string Name;
-}
