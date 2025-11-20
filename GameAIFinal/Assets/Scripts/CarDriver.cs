@@ -77,4 +77,9 @@ public class CarDriver : MonoBehaviour
         targetSpeed = forwardAmount * _acceleration;
         targetRotation = _steering * turnAmount;
     }
+
+    public void StopCompletely()
+    {
+        throw new System.NotImplementedException();
+    }
 }
