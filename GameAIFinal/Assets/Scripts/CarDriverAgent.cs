@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(CarDriver))]
 public class CarDriverAgent : Agent
 {
-    [SerializeField] private TrackCheckpoints trackCheckpoints;
+    [SerializeField] private CheckpointTrack track;
     [SerializeField] private Transform spawnPosition;
     
     private CarDriver _carDriver;
@@ -18,40 +18,20 @@ public class CarDriverAgent : Agent
         _carDriver = GetComponent<CarDriver>();
     }
 
-    private void Start()
-    {
-        trackCheckpoints.OnCarCorrectCheckPoint += TrackCheckpoints_OnCarCorrectCheckpoint;
-        trackCheckpoints.OnCarWrongCheckPoint += TrackCheckpoints_OnCarWrongCheckpoint;
-    }
-
-    private void TrackCheckpoints_OnCarCorrectCheckpoint(object sender, TrackCheckpoints.CarCheckpointEventArgs e)
-    {
-        if (e.carTransform == transform)
-        {
-            AddReward(-1f);
-        }
-    }
-    private void TrackCheckpoints_OnCarWrongCheckpoint(object sender, TrackCheckpoints.CarCheckpointEventArgs e)
-    {
-        if (e.carTransform == transform)
-        {
-            AddReward(1f);
-        }
-    }
-
     public override void OnEpisodeBegin()
     {
         transform.position = spawnPosition.position + new Vector3(Random.Range(-5f, +5f), 0.0f, Random.Range(-5f, 5f));
         transform.forward = spawnPosition.forward;
-        trackCheckpoints.ResetCheckpoint(transform);
+        // TODO: reset checkpoints
         _carDriver.StopCompletely();
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        Vector3 checkpointForward = trackCheckpoints.GetNextCheckpoint(transform).transform.forward;
-        float directionDot = Vector3.Dot(transform.forward, checkpointForward);
-        sensor.AddObservation(directionDot);
+        
+        //Vector3 checkpointForward = trackCheckpoints.GetNextCheckpoint(transform).transform.forward;
+        // float directionDot = Vector3.Dot(transform.forward, checkpointForward);
+        // sensor.AddObservation(directionDot);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
