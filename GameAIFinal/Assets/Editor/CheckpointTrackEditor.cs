@@ -1,7 +1,8 @@
+using Kart.Track;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace Kart.Editor
 {
     [CustomEditor(typeof(LinearTrack))]
     public class LinearTrackEditor : UnityEditor.Editor
