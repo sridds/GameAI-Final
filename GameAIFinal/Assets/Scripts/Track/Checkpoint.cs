@@ -30,6 +30,7 @@ namespace Kart.Track
         {
             Col = GetComponent<Collider>();
             Col.isTrigger = true;
+            gameObject.layer = LayerMask.NameToLayer("Checkpoint");
         }
 
         public float GetRewardMultiplier()

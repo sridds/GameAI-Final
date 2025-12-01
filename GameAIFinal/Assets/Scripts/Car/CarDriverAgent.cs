@@ -2,6 +2,7 @@ using Kart.Track;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,6 +12,7 @@ namespace Kart.Car
     public class CarDriverAgent : Agent
     {
         [SerializeField] private CheckpointTrack track;
+        [SerializeField] private WallBumper wallBumper;
         [SerializeField] private Transform spawnPosition;
     
         private CarDriver _carDriver;
@@ -20,11 +22,22 @@ namespace Kart.Car
             _carDriver = GetComponent<CarDriver>();
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+        }
+        
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+        }
+
         public override void OnEpisodeBegin()
         {
             transform.position = spawnPosition.position + new Vector3(Random.Range(-5f, +5f), 0.0f, Random.Range(-5f, 5f));
             transform.forward = spawnPosition.forward;
-            // TODO: reset checkpoints
+            // Reset checkpoint collectors
             _carDriver.StopCompletely();
         }
 
@@ -73,20 +86,5 @@ namespace Kart.Car
             discreteActionsOut[1] = turnAction;
         }
 
-        void OnCollisionEnter(Collision collision)
-        {
-            if (collision.collider.gameObject.TryGetComponent<Wall>(out Wall wall))
-            {
-                AddReward(-0.5f);
-            }
-        }
-
-        private void OnCollisionStay(Collision other)
-        {
-            if (other.gameObject.TryGetComponent<Wall>(out Wall wall))
-            {
-                AddReward(-0.1f);
-            }
-        }
     }
 }

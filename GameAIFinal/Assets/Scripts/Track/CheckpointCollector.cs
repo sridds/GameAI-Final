@@ -6,11 +6,13 @@ namespace Kart.Track
     [RequireComponent(typeof(Collider))]
     public class CheckpointCollector : MonoBehaviour
     {
+        [SerializeField] private Checkpoint firstCheckpointBehind;
+        
         public Checkpoint cpBehind;
     
-        public delegate void CollectHandler(); 
-        public event CollectHandler OnCollectForward;
-        public event CollectHandler OnCollectBackward;
+        // public delegate void CollectHandler(); 
+        // public event CollectHandler OnCollectForward;
+        // public event CollectHandler OnCollectBackward;
 
         // Tracks entry position of the checkpoints colliding with
         // both to validate direction and to ensure they pass the checkpoint at all
@@ -19,7 +21,12 @@ namespace Kart.Track
 
         private Collider col;
 
-        [SerializeField] private Checkpoint debugCp;
+        public void Refresh()
+        {
+            cpBehind = firstCheckpointBehind;
+            passingFromBack = new List<Checkpoint>();
+            passingFromFront = new List<Checkpoint>();
+        }
 
         private void Awake()
         {
@@ -32,12 +39,7 @@ namespace Kart.Track
             return cp.IsAheadOf(col.bounds.center);
         }
 
-        void Update()
-        {
-            Debug.Log(IsBehindCheckpoint(debugCp));
-        }
-    
-        private void OnCollisionEnter(Collision other)
+        private void OnTriggerEnter(Collider other)
         {
             if (!other.gameObject.TryGetComponent<Checkpoint>(out var cp))
                 return;
@@ -62,7 +64,7 @@ namespace Kart.Track
             }
         }
     
-        private void OnCollisionExit(Collision other)
+        private void OnTriggerExit(Collider other)
         {
             if (!other.gameObject.TryGetComponent<Checkpoint>(out var cp))
                 return;
@@ -74,12 +76,12 @@ namespace Kart.Track
             {
                 if (passingFromBack.Contains(cp))
                 {
-                    // On the same side we started
-                
+                    // Didn't pass forward, still behind
                 }
                 else if (passingFromFront.Contains(cp))
                 {
                     // Passed forward    
+                    // TODO: apply reward
                 }
             }
             else //  isAhead
@@ -90,7 +92,8 @@ namespace Kart.Track
                 }
                 else if (passingFromFront.Contains(cp))
                 {
-                    // On the same side we started
+                    // Didn't pass backward, still in front
+                    // TODO: apply penalty
                 }
             }
            
