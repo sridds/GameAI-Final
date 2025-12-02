@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Kart.Track
 {
@@ -9,10 +10,10 @@ namespace Kart.Track
         [SerializeField] private Checkpoint firstCheckpointBehind;
         
         public Checkpoint cpBehind;
-    
-        // public delegate void CollectHandler(); 
-        // public event CollectHandler OnCollectForward;
-        // public event CollectHandler OnCollectBackward;
+
+        public int NumCollected {get; private set;}
+
+        public UnityEvent<Checkpoint, bool> onPassedCheckpointDirection; // TODO: subscribe
 
         // Tracks entry position of the checkpoints colliding with
         // both to validate direction and to ensure they pass the checkpoint at all
@@ -26,11 +27,13 @@ namespace Kart.Track
             cpBehind = firstCheckpointBehind;
             passingFromBack = new List<Checkpoint>();
             passingFromFront = new List<Checkpoint>();
+            NumCollected = 0;
         }
 
         private void Awake()
         {
             col = GetComponent<Collider>();
+            Refresh();
         }
 
         bool IsBehindCheckpoint(Checkpoint cp)

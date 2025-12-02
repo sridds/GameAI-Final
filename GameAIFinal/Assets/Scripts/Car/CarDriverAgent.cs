@@ -43,7 +43,7 @@ namespace Kart.Car
 
         public override void CollectObservations(VectorSensor sensor)
         {
-        
+            // TODO: Make agent aware of direction to next checkpoint (dot product)
             //Vector3 checkpointForward = trackCheckpoints.GetNextCheckpoint(transform).transform.forward;
             // float directionDot = Vector3.Dot(transform.forward, checkpointForward);
             // sensor.AddObservation(directionDot);

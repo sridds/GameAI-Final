@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using Kart.Car;
 using UnityEngine;
 
 // Responsible for spawning racers on the track in a randomized formation
@@ -5,12 +8,23 @@ namespace Kart.Race
 {
     public class RaceSpawner : MonoBehaviour
     {
-        [SerializeField]
-        private RacerIdentifier[] _racerCatalogue;
+        [SerializeField] private RacerSO[] racerCatalogue;
 
-        public void Spawn()
+        public List<CarDriver> Spawn()
         {
+            List<CarDriver> result = new List<CarDriver>();
             Debug.Log($"[{name}]: Spawning Racers");
+            
+            foreach (RacerSO racer in racerCatalogue)
+                result.Add(SpawnRacer(racer));
+            
+            return result;
+        }
+
+        private CarDriver SpawnRacer(RacerSO racer)
+        {
+            // TODO:
+            throw new NotImplementedException();
         }
     }
 }
