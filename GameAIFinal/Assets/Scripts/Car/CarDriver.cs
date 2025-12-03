@@ -61,7 +61,7 @@ namespace Kart.Car
 
         private void FixedUpdate()
         {
-            _rigidbody.AddForce(_carOrientation.transform.forward * currentSpeed, ForceMode.Acceleration);
+            _rigidbody.AddForce(-_carOrientation.transform.forward * currentSpeed, ForceMode.Acceleration);
             _rigidbody.AddForce(Vector3.down * _gravity, ForceMode.Acceleration);
             _carHolder.eulerAngles = Vector3.Lerp(_carHolder.eulerAngles, new Vector3(0, _carHolder.eulerAngles.y + currentRotation, 0), Time.deltaTime * 5.0f);
 

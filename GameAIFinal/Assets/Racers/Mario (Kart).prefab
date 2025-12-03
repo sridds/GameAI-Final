@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: racerID
       value: 
       objectReference: {fileID: 11400000, guid: 4d6ef8c1e81ab4a43912c9e831e78073, type: 2}
+    - target: {fileID: 8925713034350551166, guid: ba04451831f11ec4cb28b449cb5b7efb, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 86df1295fc9ed8546ac6af1179fa092c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
