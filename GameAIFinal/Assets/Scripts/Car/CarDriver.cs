@@ -23,12 +23,12 @@ namespace Kart.Car
         [SerializeField] private float _gravity;
         [SerializeField] private LayerMask _groundLayer;
 
-        private bool isDrifting = false;
+        //private bool isDrifting = false;
         private float currentRotation;
         private float targetRotation;
         private float currentSpeed;
         private float targetSpeed;
-        private float forward;
+        //private float forward;
 
         public Camera myCamera { get { return _camera; } }
         public CheckpointCollector CpCollector { get { return _checkpointCollector; } }
