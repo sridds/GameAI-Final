@@ -213,6 +213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e872c99dae8ed4da955b1f8974e832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  racerID: {fileID: 11400000, guid: 4d6ef8c1e81ab4a43912c9e831e78073, type: 2}
+  _carHolder: {fileID: 4386652521913068510}
   _carOrientation: {fileID: 8502196718081215594}
   _rigidbody: {fileID: 1057123627408007406}
   _camera: {fileID: 9105987653577338998}

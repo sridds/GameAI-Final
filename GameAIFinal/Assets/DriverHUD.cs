@@ -26,13 +26,13 @@ namespace Kart
         {
             // set bindings
             Bus<RacerPlacementUpdated>.OnEvent += UpdatePlacement;
-            Bus<SpectatingRacerChanged>.OnEvent += UpdateSpectatorUI;
+            Bus<SpectatorChangeCamera>.OnEvent += UpdateSpectatorUI;
         }
 
-        public void UpdateSpectatorUI(SpectatingRacerChanged evt)
+        public void UpdateSpectatorUI(SpectatorChangeCamera evt)
         {
             // if the spectator was updated and there is no racer referenced, disable non-relevant UI
-            if(evt.racerReference == null)
+            if(evt.carReference == null)
             {
                 _placementHolder.gameObject.SetActive(false);
                 _lapHolder.gameObject.SetActive(false);
@@ -42,6 +42,18 @@ namespace Kart
             {
                 _placementHolder.gameObject.SetActive(true);
                 _lapHolder.gameObject.SetActive(true);
+            }
+
+            _spectatorTargetText.text = "Spectating: ";
+            // set text to racer name
+            if (evt.carReference != null)
+            {
+                _spectatorTargetText.text += evt.carReference.racerID.racerName;
+            }
+            // set text to camera name
+            else
+            {
+                _spectatorTargetText.text += evt.camera.gameObject.name;
             }
         }
 

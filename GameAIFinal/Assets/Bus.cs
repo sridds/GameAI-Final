@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Kart.Car;
 using Kart.Race;
 using UnityEngine;
 
@@ -21,8 +22,9 @@ namespace Kart
         public int placement;
     }
 
-    public class SpectatingRacerChanged : IGameEvent
+    public class SpectatorChangeCamera : IGameEvent
     {
-        public RacerSO racerReference;
+        public Camera camera;
+        public CarDriver carReference; // may be null
     }
 }

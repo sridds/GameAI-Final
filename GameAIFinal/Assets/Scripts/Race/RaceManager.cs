@@ -64,13 +64,16 @@ namespace Kart.Race
             if(currentCameraIndex >= OrderedRacers.Count)
             {
                 currentSpectatedRacer = null;
+                Bus<SpectatorChangeCamera>.Raise(new SpectatorChangeCamera() { camera = allCameras[currentCameraIndex], carReference = null });
             }
             else
             {
                 currentSpectatedRacer = OrderedRacers[currentCameraIndex];
+                Bus<SpectatorChangeCamera>.Raise(new SpectatorChangeCamera() { camera = allCameras[currentCameraIndex], carReference = OrderedRacers[currentCameraIndex] });
             }
 
             allCameras[currentCameraIndex].gameObject.SetActive(true);
+
         }
 
         private void InitializeCameras()
