@@ -8,6 +8,7 @@ namespace Kart.Car
     public class CarDriver : MonoBehaviour
     {
         public RacerSO racerID;
+        public int currentLap = 1;
 
         [Header("References")]
         [SerializeField] private Transform _carHolder;

@@ -10,15 +10,16 @@ namespace Kart.Race
     {
         public static RaceManager instance;
         public static CarDriver currentSpectatedRacer;
+        
 
         [SerializeField] public bool isRacing = false;
         [SerializeField] private RaceSpawner spawner;
-        [SerializeField] private float timeElapsed = 0;
         [SerializeField] private CheckpointTrack track;
         [SerializeField] private Camera[] alternateCameras;
 
         public Dictionary<CarDriver, int> RacerCheckpointsPassed { get; private set; } = new();
         public List<CarDriver> OrderedRacers { get; private set; } = new();
+        public float TimeElapsed { get; private set; }
         private List<Camera> allCameras;
         private int currentCameraIndex;
 
@@ -37,6 +38,13 @@ namespace Kart.Race
         {
             UpdateSpectatorInput();
             UpdateCurrentSpectator();
+
+            if (isRacing) UpdateRace();
+        }
+
+        private void UpdateRace()
+        {
+            TimeElapsed += Time.deltaTime;
         }
 
         private void UpdateSpectatorInput()

@@ -29,6 +29,11 @@ namespace Kart
             Bus<SpectatorChangeCamera>.OnEvent += UpdateSpectatorUI;
         }
 
+        private void Update()
+        {
+            _timeText.text = "Time: " + RaceManager.instance.TimeElapsed.ToString("F2");
+        }
+
         public void UpdateSpectatorUI(SpectatorChangeCamera evt)
         {
             // if the spectator was updated and there is no racer referenced, disable non-relevant UI
@@ -42,6 +47,9 @@ namespace Kart
             {
                 _placementHolder.gameObject.SetActive(true);
                 _lapHolder.gameObject.SetActive(true);
+
+                // set lap text
+                _lapText.text = $"Lap: {evt.carReference.currentLap}/3";
             }
 
             _spectatorTargetText.text = "Spectating: ";
