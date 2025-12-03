@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de5636be57d7b704b98dc1e957a737d6, type: 3}
   m_Name: Mario
   m_EditorClassIdentifier: 
-  CarPrefab: {fileID: 6198476058681402931, guid: ba04451831f11ec4cb28b449cb5b7efb, type: 3}
-  Icon: {fileID: 0}
-  Name: Mario
+  racerName: Mario (the Super one)
+  minimapIcon: {fileID: 339457741, guid: dacc37a7b6bb9ca4e9d4caeadf8a7650, type: 3}
+  carPrefab: {fileID: 8680326082748015173, guid: ba04451831f11ec4cb28b449cb5b7efb, type: 3}

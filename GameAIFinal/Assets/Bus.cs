@@ -25,9 +25,4 @@ namespace Kart
     {
         public RacerSO racerReference;
     }
-
-    public class CountdownUpdate : IGameEvent
-    {
-
-    }
 }

@@ -1,16 +1,19 @@
 using System;
+using Kart.Race;
 using Kart.Track;
 using UnityEngine;
 
 namespace Kart.Car
 {
-    [RequireComponent(typeof(CheckpointCollector))]
     public class CarDriver : MonoBehaviour
     {
+        public RacerSO racerID;
+
         [Header("References")]
         [SerializeField] private Transform _carOrientation;
         [SerializeField] private Rigidbody _rigidbody;
-        public CheckpointCollector CpCollector {get; private set;}
+        [SerializeField] private Camera _camera;
+        [SerializeField] private CheckpointCollector _checkpointCollector;
 
         [Header("Car Settings")]
         [SerializeField] private float _steering;
@@ -25,10 +28,8 @@ namespace Kart.Car
         private float targetSpeed;
         private float forward;
 
-        private void Awake()
-        {
-            CpCollector = GetComponent<CheckpointCollector>();
-        }
+        public Camera myCamera { get { return _camera; } }
+        public CheckpointCollector CpCollector { get { return _checkpointCollector; } }
 
         private void Update()
         {

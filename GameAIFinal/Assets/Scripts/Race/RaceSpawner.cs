@@ -23,8 +23,7 @@ namespace Kart.Race
 
         private CarDriver SpawnRacer(RacerSO racer)
         {
-            // TODO:
-            throw new NotImplementedException();
+            return Instantiate(racer.carPrefab);
         }
     }
 }

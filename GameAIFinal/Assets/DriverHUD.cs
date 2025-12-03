@@ -22,7 +22,7 @@ namespace Kart
         [SerializeField]
         private TextMeshProUGUI _spectatorTargetText;
 
-        private void Awake()
+        private void Start()
         {
             // set bindings
             Bus<RacerPlacementUpdated>.OnEvent += UpdatePlacement;

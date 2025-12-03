@@ -7,7 +7,7 @@ namespace Kart.Race
     public class RacerSO : ScriptableObject
     {
         public string racerName;
-        public Sprite icon;
+        public Sprite minimapIcon;
         public CarDriver carPrefab;
     }
 }

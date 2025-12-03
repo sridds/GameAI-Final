@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1057123627408007406}
   - component: {fileID: 5818100849574397341}
   m_Layer: 0
-  m_Name: Body
+  m_Name: Brody:3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,9 +41,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1636292353380630}
   serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 300
+  m_Drag: 2
+  m_AngularDrag: 2
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -57,9 +57,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!135 &5818100849574397341
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -79,8 +79,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.5
-  m_Center: {x: 0, y: 0.75, z: 0}
+  m_Radius: 0.6
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &72473798309970704
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 6730314246862650137}
   - component: {fileID: 968164200954858413}
   m_Layer: 0
-  m_Name: Graphics
+  m_Name: Restore Up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109,7 +109,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 2.2}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8476699851945216928}
@@ -176,6 +176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4426824962866279666}
+  - component: {fileID: 8680326082748015173}
   m_Layer: 0
   m_Name: Generic Racer
   m_TagString: Untagged
@@ -200,6 +201,28 @@ Transform:
   - {fileID: 6113849472389291415}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8680326082748015173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407071230113221514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e872c99dae8ed4da955b1f8974e832, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _carOrientation: {fileID: 8502196718081215594}
+  _rigidbody: {fileID: 1057123627408007406}
+  _camera: {fileID: 9105987653577338998}
+  _checkpointCollector: {fileID: 0}
+  _steering: 15
+  _acceleration: 30
+  _gravity: 25
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &3918445203264599927
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,9 +252,147 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7034828918337851743}
   - {fileID: 8502196718081215594}
   m_Father: {fileID: 4386652521913068510}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7796846249325765998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7034828918337851743}
+  - component: {fileID: 9105987653577338998}
+  - component: {fileID: 1731688993512303873}
+  - component: {fileID: 9091103777561992011}
+  m_Layer: 0
+  m_Name: Main Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7034828918337851743
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7796846249325765998}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.06162845, y: 0.70441604, z: -0.06162845, w: 0.70441604}
+  m_LocalPosition: {x: -8, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8476699851945216928}
+  m_LocalEulerAnglesHint: {x: 10, y: 90, z: 0}
+--- !u!20 &9105987653577338998
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7796846249325765998}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.36603773, g: 0.75156194, b: 1, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 1
+  m_ShutterSpeed: 5
+  m_Aperture: 5.62
+  m_FocusDistance: 10
+  m_FocalLength: 2
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0.1, y: 0.1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &1731688993512303873
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7796846249325765998}
+  m_Enabled: 1
+--- !u!114 &9091103777561992011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7796846249325765998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &7846625677222102359
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +402,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4386652521913068510}
-  - component: {fileID: 3360858246440823437}
   m_Layer: 0
   m_Name: Kart
   m_TagString: Untagged
@@ -258,30 +418,10 @@ Transform:
   m_GameObject: {fileID: 7846625677222102359}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8476699851945216928}
   m_Father: {fileID: 4426824962866279666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3360858246440823437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7846625677222102359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76e872c99dae8ed4da955b1f8974e832, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _carNormal: {fileID: 8476699851945216928}
-  _rigidbody: {fileID: 1057123627408007406}
-  _steering: 15
-  _acceleration: 65
-  _gravity: 25
-  _groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
