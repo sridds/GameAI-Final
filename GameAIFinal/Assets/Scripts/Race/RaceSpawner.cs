@@ -7,7 +7,7 @@ namespace Kart.Race
 {
     public class RaceSpawner : MonoBehaviour
     {
-        [SerializeField] private RacerSO[] racerCatalogue;
+        [SerializeField] private List<RacerSO> racerCatalogue = new List<RacerSO>();
         [SerializeField] private Transform[] orderedSpawnPoints;
         [SerializeField] private bool spawnRandomly;
 
@@ -15,36 +15,32 @@ namespace Kart.Race
         {
             List<CarDriver> result = new List<CarDriver>();
             Debug.Log($"[{name}]: Spawning Racers");
-            
-            foreach (RacerSO racer in racerCatalogue)
-                result.Add(SpawnRacer(racer));
 
             if (spawnRandomly)
             {
-                int n = result.Count;
+                int n = racerCatalogue.Count;
                 while (n > 1)
                 {
                     n--;
                     int k = Random.Range(0, n + 1); // Get a random index from 0 to n (inclusive)
-                    CarDriver value = result[k];
-                    result[k] = result[n];
-                    result[n] = value;
+                    RacerSO value = racerCatalogue[k];
+                    racerCatalogue[k] = racerCatalogue[n];
+                    racerCatalogue[n] = value;
                 }
             }
 
             // set positions
-            for(int i = 0; i < result.Count; i++)
+            for(int i = 0; i < racerCatalogue.Count; i++)
             {
-                result[i].transform.position = orderedSpawnPoints[i].transform.position;
-                Debug.Log($"{orderedSpawnPoints[i].transform.position}, {result[i].transform.position}");
+                result.Add(SpawnRacer(racerCatalogue[i], orderedSpawnPoints[i].transform.position));
             }
             
             return result;
         }
 
-        private CarDriver SpawnRacer(RacerSO racer)
+        private CarDriver SpawnRacer(RacerSO racer, Vector3 position)
         {
-            return Instantiate(racer.carPrefab);
+            return Instantiate(racer.carPrefab, position, Quaternion.identity);
         }
     }
 }
