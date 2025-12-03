@@ -16,6 +16,12 @@ namespace Kart
         public static void Raise([CanBeNull] T evt) => OnEvent?.Invoke(evt);
     }
 
+    public class RaceStateUpdated : IGameEvent
+    {
+        public ERaceState previousState;
+        public ERaceState currentState;
+    }
+
     public class RacerPlacementUpdated : IGameEvent
     {
         public RacerSO racerReference;

@@ -17,12 +17,11 @@ namespace Kart.Race
     {
         public static RaceManager instance;
         public static CarDriver currentSpectatedRacer;
-       
-        [SerializeField] public bool isRacing = false;
+
         [SerializeField] private RaceSpawner spawner;
         [SerializeField] private CheckpointTrack track;
         [SerializeField] private Camera[] alternateCameras;
-        [SerializeField] private float pregameTimer = 2.0f;
+        [SerializeField] private float pregameTimer = 1.0f;
 
         public Dictionary<CarDriver, int> RacerCheckpointsPassed { get; private set; } = new();
         public List<CarDriver> OrderedRacers { get; private set; } = new();
@@ -46,20 +45,27 @@ namespace Kart.Race
 
         private void Start()
         {
-            StartRace();
+            ChangeRaceState(ERaceState.Pregame);
         }
 
         private void Update()
         {
-            UpdateSpectatorInput();
-            UpdateCurrentSpectator();
+            // start race by pressing mouse down
+            if (Input.GetMouseButtonDown(0) && raceState == ERaceState.Pregame)
+            {
+                StartRace();
+            }
 
-            if (isRacing) UpdateRace();
+            if (raceState == ERaceState.Racing) UpdateRace();
         }
 
         private void UpdateRace()
         {
             TimeElapsed += Time.deltaTime;
+
+            // we can spectate and change cameras during race
+            UpdateSpectatorInput();
+            UpdateCurrentSpectator();
         }
 
         private void UpdateSpectatorInput()
@@ -89,12 +95,14 @@ namespace Kart.Race
                 currentSpectatedRacer = null;
                 Bus<SpectatorChangeCamera>.Raise(new SpectatorChangeCamera() { camera = allCameras[currentCameraIndex], carReference = null });
             }
+            // we are spectating a racer
             else
             {
                 currentSpectatedRacer = OrderedRacers[currentCameraIndex];
                 Bus<SpectatorChangeCamera>.Raise(new SpectatorChangeCamera() { camera = allCameras[currentCameraIndex], carReference = OrderedRacers[currentCameraIndex] });
             }
 
+            // set the current camera active
             allCameras[currentCameraIndex].gameObject.SetActive(true);
 
         }
@@ -146,11 +154,18 @@ namespace Kart.Race
             StartCoroutine(IStartRace());
         }
 
+        private void ChangeRaceState(ERaceState state)
+        {
+            ERaceState previous = raceState;
+            raceState = state;
+
+            Bus<RaceStateUpdated>.Raise(new RaceStateUpdated() { previousState = previous, currentState = state });
+        }
+
         private IEnumerator IStartRace()
         {
-            raceState = ERaceState.Pregame;
+            ChangeRaceState(ERaceState.TimerStarted);
             yield return new WaitForSeconds(pregameTimer);
-            raceState = ERaceState.TimerStarted;
 
             // 3
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Three });
@@ -163,9 +178,7 @@ namespace Kart.Race
             yield return new WaitForSeconds(1.0f);
 
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Go });
-            isRacing = true;
-            raceState = ERaceState.Racing;
-            // GO!
+            ChangeRaceState(ERaceState.Racing);
         }
     }
 }

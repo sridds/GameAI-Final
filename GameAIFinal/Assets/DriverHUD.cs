@@ -23,6 +23,12 @@ namespace Kart
         private TextMeshProUGUI _countdownText;
         [SerializeField]
         private TextMeshProUGUI _spectatorTargetText;
+        [SerializeField]
+        private GameObject _pregameHolder;
+        [SerializeField]
+        private GameObject _driverUIHolder;
+        [SerializeField]
+        private GameObject _spectatorUIHolder;
 
         private Coroutine currentPlacementCoroutine;
 
@@ -32,18 +38,37 @@ namespace Kart
             Bus<RacerPlacementUpdated>.OnEvent += UpdatePlacement;
             Bus<SpectatorChangeCamera>.OnEvent += UpdateSpectatorUI;
             Bus<TimerAnnouncement>.OnEvent += DisplayTimerAnnouncement;
+            Bus<RaceStateUpdated>.OnEvent += UpdateActiveMenus;
 
             _placementText.text = "";
+
+            // set menus active state at the start to reflect pregame menus
+            _pregameHolder.SetActive(true);
+            _driverUIHolder.SetActive(false);
+            _spectatorUIHolder.SetActive(false);
+        }
+
+        private void UpdateActiveMenus(RaceStateUpdated evt)
+        {
+            // Display driver / spectator UI if the timer has started
+            if(evt.currentState == ERaceState.TimerStarted)
+            {
+                _pregameHolder.SetActive(false);
+                _driverUIHolder.SetActive(true);
+                _spectatorUIHolder.SetActive(false);
+            }
+
+            else if (evt.currentState == ERaceState.Racing)
+            {
+                _pregameHolder.SetActive(false);
+                _driverUIHolder.SetActive(true);
+                _spectatorUIHolder.SetActive(true);
+            }
         }
 
         private void Update()
         {
             _timeText.text = "Time: " + RaceManager.instance.TimeElapsed.ToString("F2");
-
-            if (Input.GetKeyDown(KeyCode.F))
-            {
-                Bus<RacerPlacementUpdated>.Raise(new RacerPlacementUpdated() { placement = Random.Range(1, 12) });
-            }
         }
 
         public void DisplayTimerAnnouncement(TimerAnnouncement evt)
@@ -102,6 +127,9 @@ namespace Kart
             }
         }
 
+        /// <summary>
+        /// Updates the placement of the racer (if the racer is on screen)
+        /// </summary>
         public void UpdatePlacement(RacerPlacementUpdated evt)
         {
             if (evt.racerReference == RaceManager.currentSpectatedRacer) return;
@@ -119,6 +147,9 @@ namespace Kart
             currentPlacementCoroutine = StartCoroutine(IUpdatePlacement(placeStr));
         }
 
+        /// <summary>
+        /// Helper function that does some nice animation on the placement text using Demigant's DOTween libray
+        /// </summary>
         private IEnumerator IUpdatePlacement(string newPlacementString)
         {
             _placementText.DOKill(false);
