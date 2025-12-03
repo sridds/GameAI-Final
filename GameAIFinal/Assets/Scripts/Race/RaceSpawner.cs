@@ -9,6 +9,7 @@ namespace Kart.Race
     public class RaceSpawner : MonoBehaviour
     {
         [SerializeField] private RacerSO[] racerCatalogue;
+        [SerializeField] private Transform[] orderedSpawnPoints;
 
         public List<CarDriver> Spawn()
         {
