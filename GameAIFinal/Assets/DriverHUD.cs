@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Kart.Race;
 using TMPro;
 using UnityEngine;
@@ -27,11 +28,39 @@ namespace Kart
             // set bindings
             Bus<RacerPlacementUpdated>.OnEvent += UpdatePlacement;
             Bus<SpectatorChangeCamera>.OnEvent += UpdateSpectatorUI;
+            Bus<TimerAnnouncement>.OnEvent += DisplayTimerAnnouncement;
         }
 
         private void Update()
         {
             _timeText.text = "Time: " + RaceManager.instance.TimeElapsed.ToString("F2");
+        }
+
+        public void DisplayTimerAnnouncement(TimerAnnouncement evt)
+        {
+            _countdownText.gameObject.SetActive(true);
+            _countdownText.transform.localScale = Vector3.one;
+            _countdownText.color = Color.white;
+
+            _countdownText.DOKill(false);
+            _countdownText.DOFade(0.0f, 0.5f).SetEase(Ease.InQuad);
+            _countdownText.transform.DOScale(1.2f, 0.5f).SetEase(Ease.OutQuad);
+
+            switch (evt.timerAnnouncementType)
+            {
+                case TimerAnnouncement.ETimerAnnouncement.Three:
+                    _countdownText.text = "3";
+                    break;
+                case TimerAnnouncement.ETimerAnnouncement.Two:
+                    _countdownText.text = "2";
+                    break;
+                case TimerAnnouncement.ETimerAnnouncement.One:
+                    _countdownText.text = "1";
+                    break;
+                case TimerAnnouncement.ETimerAnnouncement.Go:
+                    _countdownText.text = "GO!";
+                    break;
+            }
         }
 
         public void UpdateSpectatorUI(SpectatorChangeCamera evt)

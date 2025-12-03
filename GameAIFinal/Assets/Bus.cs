@@ -22,6 +22,19 @@ namespace Kart
         public int placement;
     }
 
+    public class TimerAnnouncement : IGameEvent
+    {
+        public enum ETimerAnnouncement
+        {
+            Three,
+            Two,
+            One,
+            Go
+        }
+
+        public ETimerAnnouncement timerAnnouncementType;
+    }
+
     public class SpectatorChangeCamera : IGameEvent
     {
         public Camera camera;

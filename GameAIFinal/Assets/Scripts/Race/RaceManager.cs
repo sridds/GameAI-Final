@@ -1,27 +1,37 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Kart.Car;
 using Kart.Track;
 using UnityEngine;
 
 namespace Kart.Race
 {
+    public enum ERaceState
+    {
+        Pregame,
+        TimerStarted,
+        Racing,
+        RaceEnded
+    }
     public class RaceManager : MonoBehaviour
     {
         public static RaceManager instance;
         public static CarDriver currentSpectatedRacer;
-        
-
+       
         [SerializeField] public bool isRacing = false;
         [SerializeField] private RaceSpawner spawner;
         [SerializeField] private CheckpointTrack track;
         [SerializeField] private Camera[] alternateCameras;
+        [SerializeField] private float pregameTimer = 2.0f;
 
         public Dictionary<CarDriver, int> RacerCheckpointsPassed { get; private set; } = new();
         public List<CarDriver> OrderedRacers { get; private set; } = new();
         public float TimeElapsed { get; private set; }
+        public ERaceState RaceState { get; private set; }
+
         private List<Camera> allCameras;
         private int currentCameraIndex;
+        private ERaceState raceState;
 
         private void Awake()
         {
@@ -32,6 +42,11 @@ namespace Kart.Race
 
             currentSpectatedRacer = null;
             currentCameraIndex = OrderedRacers.Count;
+        }
+
+        private void Start()
+        {
+            StartRace();
         }
 
         private void Update()
@@ -124,6 +139,33 @@ namespace Kart.Race
         {
             Debug.Log($"[{name}]: Initializing Race...");
             OrderedRacers = spawner.Spawn();
+        }
+
+        public void StartRace()
+        {
+            StartCoroutine(IStartRace());
+        }
+
+        private IEnumerator IStartRace()
+        {
+            raceState = ERaceState.Pregame;
+            yield return new WaitForSeconds(pregameTimer);
+            raceState = ERaceState.TimerStarted;
+
+            // 3
+            Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Three });
+            yield return new WaitForSeconds(1.0f);
+            // 2
+            Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Two });
+            yield return new WaitForSeconds(1.0f);
+            // 1
+            Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.One });
+            yield return new WaitForSeconds(1.0f);
+
+            Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Go });
+            isRacing = true;
+            raceState = ERaceState.Racing;
+            // GO!
         }
     }
 }
