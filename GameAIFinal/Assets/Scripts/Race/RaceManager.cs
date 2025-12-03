@@ -71,6 +71,23 @@ namespace Kart.Race
             // we can spectate and change cameras during race
             UpdateSpectatorInput();
             UpdateCurrentSpectator();
+            UpdateRaceLeaderboard();
+        }
+
+        private void UpdateRaceLeaderboard()
+        {
+            // we need to track the furthest checkpoint, along with which lap it was recorded in, and adjust all placements based on this. 
+
+            // itll be based on the most recent checkpoint, itll compare all distances of each racer relative to the most recent checkpoint reached
+            // then after grabbing all distances itll compare them to determine placements
+            for(int i = 0; i < OrderedRacers.Count; i++)
+            {
+                // determine all racers and the last checkpoint reached associated with them.
+
+                // if there are multiple racers associated with the same last checkpoint, determine where they are relative to one another and get placement
+
+                // if there is only one racer, that one immediately deserves the spot
+            }
         }
 
         private void UpdateSpectatorInput()

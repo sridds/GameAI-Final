@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dca660f5ba114d54895179f7d4a4f81c, type: 3}
-  m_Name: Switch Camera
+  m_Script: {fileID: 11500000, guid: de5636be57d7b704b98dc1e957a737d6, type: 3}
+  m_Name: Mario
   m_EditorClassIdentifier: 
-  clip:
-  - {fileID: 8300000, guid: ed0dfb5a25e677647a5aca86b38befe7, type: 3}
-  pitch: 2
-  randomPitchDeviation: {x: 0, y: 0}
-  volume: 1
-  doSpatialAudio: 0
-  minDistance: 0
-  maxDistance: 0
+  racerName: Mario
+  minimapIcon: {fileID: 339457741, guid: dacc37a7b6bb9ca4e9d4caeadf8a7650, type: 3}
+  carPrefab: {fileID: 921773951978566726, guid: 5b36c4b47d4e49e479c51a4486414f97, type: 3}

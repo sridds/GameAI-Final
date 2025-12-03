@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: de5636be57d7b704b98dc1e957a737d6, type: 3}
-  m_Name: Mario
+  m_Name: Waluigi
   m_EditorClassIdentifier: 
-  racerName: Mario (the Super one)
-  minimapIcon: {fileID: 339457741, guid: dacc37a7b6bb9ca4e9d4caeadf8a7650, type: 3}
-  carPrefab: {fileID: 8680326082748015173, guid: ba04451831f11ec4cb28b449cb5b7efb, type: 3}
+  racerName: Waluigi
+  minimapIcon: {fileID: -1887920494, guid: dacc37a7b6bb9ca4e9d4caeadf8a7650, type: 3}
+  carPrefab: {fileID: 8805970429885055571, guid: 5458146889b8175439f213a230502a7d, type: 3}

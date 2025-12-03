@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1057123627408007406}
   - component: {fileID: 5818100849574397341}
   m_Layer: 0
-  m_Name: Brody:3
+  m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 4426824962866279666}
   - component: {fileID: 8680326082748015173}
   m_Layer: 0
-  m_Name: Generic Racer
+  m_Name: Generic Kart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,7 +213,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76e872c99dae8ed4da955b1f8974e832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  racerID: {fileID: 11400000, guid: 4d6ef8c1e81ab4a43912c9e831e78073, type: 2}
+  racerID: {fileID: 0}
+  currentLap: 1
   _carHolder: {fileID: 4386652521913068510}
   _carOrientation: {fileID: 8502196718081215594}
   _rigidbody: {fileID: 1057123627408007406}
