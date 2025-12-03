@@ -32,7 +32,7 @@ namespace Kart
 
         private Coroutine currentPlacementCoroutine;
 
-        private void Start()
+        private void Awake()
         {
             // set bindings
             Bus<RacerPlacementUpdated>.OnEvent += UpdatePlacement;
@@ -41,28 +41,28 @@ namespace Kart
             Bus<RaceStateUpdated>.OnEvent += UpdateActiveMenus;
 
             _placementText.text = "";
-
-            // set menus active state at the start to reflect pregame menus
-            _pregameHolder.SetActive(true);
-            _driverUIHolder.SetActive(false);
-            _spectatorUIHolder.SetActive(false);
         }
 
         private void UpdateActiveMenus(RaceStateUpdated evt)
         {
             // Display driver / spectator UI if the timer has started
-            if(evt.currentState == ERaceState.TimerStarted)
+            switch (evt.currentState)
             {
-                _pregameHolder.SetActive(false);
-                _driverUIHolder.SetActive(true);
-                _spectatorUIHolder.SetActive(false);
-            }
-
-            else if (evt.currentState == ERaceState.Racing)
-            {
-                _pregameHolder.SetActive(false);
-                _driverUIHolder.SetActive(true);
-                _spectatorUIHolder.SetActive(true);
+                case ERaceState.Pregame:
+                    _pregameHolder.SetActive(true);
+                    _driverUIHolder.SetActive(false);
+                    _spectatorUIHolder.SetActive(false);
+                    break;
+                case ERaceState.TimerStarted:
+                    _pregameHolder.SetActive(false);
+                    _driverUIHolder.SetActive(true);
+                    _spectatorUIHolder.SetActive(false);
+                    break;
+                case ERaceState.Racing:
+                    _pregameHolder.SetActive(false);
+                    _driverUIHolder.SetActive(true);
+                    _spectatorUIHolder.SetActive(true);
+                    break;
             }
         }
 

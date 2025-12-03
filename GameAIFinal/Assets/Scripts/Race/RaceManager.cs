@@ -23,6 +23,11 @@ namespace Kart.Race
         [SerializeField] private Camera[] alternateCameras;
         [SerializeField] private float pregameTimer = 1.0f;
 
+        [Header("Race SFX")]
+        [SerializeField] private SoundStreamSO _countdownSound;
+        [SerializeField] private SoundStreamSO _raceStartSound;
+        [SerializeField] private SoundStreamSO _spectatorChangeSound;
+
         public Dictionary<CarDriver, int> RacerCheckpointsPassed { get; private set; } = new();
         public List<CarDriver> OrderedRacers { get; private set; } = new();
         public float TimeElapsed { get; private set; }
@@ -83,6 +88,7 @@ namespace Kart.Race
             if (currentCameraIndex != previousIndex)
             {
                 // disable current to prepare for next
+                AudioManager.instance.PlayAudio(_spectatorChangeSound);
                 allCameras[previousIndex].gameObject.SetActive(false);
             }
         }
@@ -168,15 +174,19 @@ namespace Kart.Race
             yield return new WaitForSeconds(pregameTimer);
 
             // 3
+            AudioManager.instance.PlayAudio(_countdownSound);
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Three });
             yield return new WaitForSeconds(1.0f);
             // 2
+            AudioManager.instance.PlayAudio(_countdownSound);
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Two });
             yield return new WaitForSeconds(1.0f);
             // 1
+            AudioManager.instance.PlayAudio(_countdownSound);
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.One });
             yield return new WaitForSeconds(1.0f);
 
+            AudioManager.instance.PlayAudio(_raceStartSound);
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { timerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Go });
             ChangeRaceState(ERaceState.Racing);
         }
