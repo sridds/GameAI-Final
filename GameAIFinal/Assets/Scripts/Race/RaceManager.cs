@@ -1,16 +1,15 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Kart.Car;
 using Kart.Track;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Kart.Race
 {
     public class RaceManager : MonoBehaviour
     {
+        public static RaceManager instance;
+        public static RacerSO currentSpectatedRacer;
+
         [SerializeField] public bool isRacing = false;
         [SerializeField] private RaceSpawner spawner;
         [SerializeField] private float timeElapsed = 0;
@@ -22,6 +21,9 @@ namespace Kart.Race
         private void Awake()
         {
             InitRace();
+
+            currentSpectatedRacer = null;
+            instance = this;
         }
         
         private void OnEnable()
@@ -36,7 +38,6 @@ namespace Kart.Race
         {
             
         }
-        
 
         public void InitRace()
         {

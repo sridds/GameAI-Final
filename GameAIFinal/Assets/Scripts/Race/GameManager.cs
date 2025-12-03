@@ -4,6 +4,8 @@ namespace Kart.Race
 {
     public class GameManager : MonoBehaviour
     {
+        public static GameManager instance;
+
         void Awake()
         {
         
@@ -12,7 +14,11 @@ namespace Kart.Race
 #else
     Application.targetFrameRate = -1;
 #endif
-        
+
+            if (instance == null)
+            {
+                instance = this;
+            }
         }
     }
 }
