@@ -32,6 +32,8 @@ namespace Kart
             Go
         }
 
+        public string[] timerMapping = new string[] { "3", "2", "1", "GO!" };
+
         public ETimerAnnouncement timerAnnouncementType;
     }
 

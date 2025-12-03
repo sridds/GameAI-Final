@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Kart.Race;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -23,43 +24,50 @@ namespace Kart
         [SerializeField]
         private TextMeshProUGUI _spectatorTargetText;
 
+        private Coroutine currentPlacementCoroutine;
+
         private void Start()
         {
             // set bindings
             Bus<RacerPlacementUpdated>.OnEvent += UpdatePlacement;
             Bus<SpectatorChangeCamera>.OnEvent += UpdateSpectatorUI;
             Bus<TimerAnnouncement>.OnEvent += DisplayTimerAnnouncement;
+
+            _placementText.text = "";
         }
 
         private void Update()
         {
             _timeText.text = "Time: " + RaceManager.instance.TimeElapsed.ToString("F2");
+
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                Bus<RacerPlacementUpdated>.Raise(new RacerPlacementUpdated() { placement = Random.Range(1, 12) });
+            }
         }
 
         public void DisplayTimerAnnouncement(TimerAnnouncement evt)
         {
+            // Reset values for countdown text
             _countdownText.gameObject.SetActive(true);
             _countdownText.transform.localScale = Vector3.one;
             _countdownText.color = Color.white;
 
+            // Start animation
             _countdownText.DOKill(false);
-            _countdownText.DOFade(0.0f, 0.5f).SetEase(Ease.InQuad);
-            _countdownText.transform.DOScale(1.2f, 0.5f).SetEase(Ease.OutQuad);
+            _countdownText.text = evt.timerMapping[(int)evt.timerAnnouncementType];
 
-            switch (evt.timerAnnouncementType)
+            // number animation
+            if(evt.timerAnnouncementType != TimerAnnouncement.ETimerAnnouncement.Go)
             {
-                case TimerAnnouncement.ETimerAnnouncement.Three:
-                    _countdownText.text = "3";
-                    break;
-                case TimerAnnouncement.ETimerAnnouncement.Two:
-                    _countdownText.text = "2";
-                    break;
-                case TimerAnnouncement.ETimerAnnouncement.One:
-                    _countdownText.text = "1";
-                    break;
-                case TimerAnnouncement.ETimerAnnouncement.Go:
-                    _countdownText.text = "GO!";
-                    break;
+                _countdownText.DOFade(0.0f, 0.5f).SetEase(Ease.InQuad);
+                _countdownText.transform.DOScale(1.2f, 0.5f).SetEase(Ease.OutQuad);
+            }
+            // GO! animation
+            else
+            {
+                _countdownText.transform.DOScale(1.4f, 0.5f).SetEase(Ease.OutQuad);
+                _countdownText.DOFade(0.0f, 0.5f).SetEase(Ease.InQuad).SetDelay(0.3f);
             }
         }
 
@@ -106,7 +114,23 @@ namespace Kart
             else if (evt.placement == 3) placeStr += "rd";
             else placeStr += "th";
 
-            _placementText.text = placeStr;
+            // stop current animation before playing new one
+            if(currentPlacementCoroutine != null) StopCoroutine(currentPlacementCoroutine);
+            currentPlacementCoroutine = StartCoroutine(IUpdatePlacement(placeStr));
+        }
+
+        private IEnumerator IUpdatePlacement(string newPlacementString)
+        {
+            _placementText.DOKill(false);
+
+            _placementText.rectTransform.DOAnchorPosY(28f, 0.25f).SetEase(Ease.OutQuad);
+            yield return _placementText.DOFade(0.0f, 0.25f).SetEase(Ease.OutQuad).WaitForCompletion();
+            _placementText.text = newPlacementString;
+
+            _placementText.rectTransform.DOAnchorPosY(100f, 0.25f).SetEase(Ease.OutQuad);
+            yield return _placementText.DOFade(1.0f, 0.25f).SetEase(Ease.OutQuad).WaitForCompletion();
+
+            currentPlacementCoroutine = null;
         }
     }
 }
