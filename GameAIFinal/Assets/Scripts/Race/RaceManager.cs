@@ -87,6 +87,8 @@ namespace Kart.Race
                 // if there are multiple racers associated with the same last checkpoint, determine where they are relative to one another and get placement
 
                 // if there is only one racer, that one immediately deserves the spot
+
+
             }
         }
 

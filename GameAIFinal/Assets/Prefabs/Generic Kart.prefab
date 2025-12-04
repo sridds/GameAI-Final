@@ -59,7 +59,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 2
 --- !u!135 &5818100849574397341
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -140,6 +140,10 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  _angularDrag: 0.8
+  _downforceMultiplier: 2
+  _brakeForce: 15
+  _counterSteerStrength: 0.3
 --- !u!1 &3918445203264599927
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c45a1436a22269b45abbb2fa2c05c6d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.15
+      value: -0.37
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c45a1436a22269b45abbb2fa2c05c6d1, type: 3}
       propertyPath: m_LocalPosition.z
