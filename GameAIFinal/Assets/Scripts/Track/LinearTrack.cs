@@ -5,29 +5,47 @@ using UnityEngine;
 // All checkpoints must be ahead of their previous checkpoint
 namespace Kart.Track
 {
-    public class LinearTrack : CheckpointTrack
+    public class LinearTrack : CheckpointTrack, ICheckpointTrack
     {
         [SerializeField] private List<Checkpoint> checkpoints = new();
+
+        public int TotalCheckpoints => checkpoints.Count;
+
+        public Checkpoint GetNextCheckpoint(CheckpointSensor sensor)
+        {
+            var idx = checkpoints.IndexOf(sensor.LastCheckpointPassed);
+            return checkpoints[(idx + 1) % checkpoints.Count];
+        }
+
+        public Checkpoint GetCheckpointAt(int index)
+        {
+            return checkpoints[(index % checkpoints.Count + checkpoints.Count) % checkpoints.Count];
+        }
+
+        public float GetLapProgress(CheckpointSensor sensor)
+        {
+            return checkpoints.Count == 0
+                ? 0f
+                : (float)(sensor.CheckpointsPassed % checkpoints.Count) / checkpoints.Count;
+        }
 
         public override Checkpoint GetNextCheckpoint(CheckpointCollector collector)
         {
             return checkpoints[checkpoints.IndexOf(collector.cpBehind) % checkpoints.Count];
         }
-    
+
         public void PopulateCheckpoints()
         {
             checkpoints.Clear();
-            foreach (Checkpoint cp in GetComponentsInChildren<Checkpoint>(false))
+            foreach (var cp in GetComponentsInChildren<Checkpoint>(false))
             {
-                cp.gameObject.name = "Checkpoint #" + checkpoints.Count.ToString();
+                cp.gameObject.name = "Checkpoint #" + checkpoints.Count;
                 checkpoints.Add(cp);
             }
 
             if (!IsValidLoop())
-            {
                 Debug.LogError("Each checkpoint must be placed in front of the previous, in a loop. " +
                                "Check recent warnings for more details.");
-            }
         }
 
         // All checkpoints must be ahead of their previous checkpoint
@@ -38,18 +56,18 @@ namespace Kart.Track
                 Debug.LogWarning("Not enough checkpoints for a track loop.");
                 return false;
             }
-            
-            bool isValid = true;
-            for (int i = 1; i <= checkpoints.Count; i++)
+
+            var isValid = true;
+            for (var i = 1; i <= checkpoints.Count; i++)
             {
-                Checkpoint cp = checkpoints[i % checkpoints.Count];
-                Checkpoint cpLast = checkpoints[i - 1];
-            
+                var cp = checkpoints[i % checkpoints.Count];
+                var cpLast = checkpoints[i - 1];
+
                 if (!cp.IsAheadOf(cpLast.Col.bounds.center))
                 {
                     Debug.LogWarning($"Checkpoint {cp.gameObject.name} " +
                                      $"is not ahead of checkpoint {cpLast.gameObject.name}!");
-                
+
                     isValid = false;
                 }
             }
