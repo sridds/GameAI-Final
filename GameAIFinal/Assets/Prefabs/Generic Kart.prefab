@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6113849472389291415}
   - component: {fileID: 1057123627408007406}
   - component: {fileID: 5818100849574397341}
+  - component: {fileID: 5899622828428242743}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -81,6 +82,19 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.6
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5899622828428242743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636292353380630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cee3bdfe7f14a358ccee4faf8c6ae5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialCheckpointBehind: {fileID: 0}
 --- !u!1 &1407071230113221514
 GameObject:
   m_ObjectHideFlags: 0

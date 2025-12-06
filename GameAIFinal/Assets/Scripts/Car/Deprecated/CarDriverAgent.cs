@@ -3,18 +3,18 @@ using Kart.Track;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-namespace Kart.Car
+namespace Kart.Car.Deprecated
 {
-    [Obsolete("Use Kart.Car.KartController class instead")]
+    [Obsolete("Use Kart.Car.KartAgent class instead")]
     [RequireComponent(typeof(CarDriver))]
     public class CarDriverAgent : Agent
     {
         [SerializeField] private CheckpointTrack track;
-        [SerializeField] private WallBumper wallBumper;
+        [FormerlySerializedAs("wallBumper")] [SerializeField] private WallSensor wallSensor;
         [SerializeField] private Transform spawnPosition;
     
         private CarDriver _carDriver;

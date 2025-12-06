@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Kart.Track
+namespace Kart.Track.Deprecated
 {
-    [Obsolete("Use Kart.Car.KartController class instead")]
+    [Obsolete("Use Kart.Track.CheckpointSensor class instead")]
     [RequireComponent(typeof(Collider))]
     public class CheckpointCollector : MonoBehaviour
     {
@@ -36,6 +36,8 @@ namespace Kart.Track
         {
             col = GetComponent<Collider>();
             Refresh();
+            
+            Debug.LogWarning("CheckpointCollector deprecated, Use CheckpointSensor instead");
         }
 
         bool IsBehindCheckpoint(Checkpoint cp)

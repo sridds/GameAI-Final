@@ -7,11 +7,9 @@ namespace Kart.Track
     [RequireComponent(typeof(Collider))]
     public class CheckpointSensor : MonoBehaviour
     {
-        [SerializeField] private Checkpoint initialCheckpointBehind;
         private readonly Dictionary<Checkpoint, bool> _entryFromBehind = new();
 
         private Collider _collider;
-        private CheckpointTrack _track;
         
         public event Action<CheckpointPassedEvent> OnCheckpointPassed;
         public Checkpoint LastCheckpointPassedForward { get; private set; }
@@ -24,7 +22,7 @@ namespace Kart.Track
 
         public void Reset()
         {
-            LastCheckpointPassedForward = initialCheckpointBehind;
+            LastCheckpointPassedForward = null;
             CheckpointsPassed = 0;
             _entryFromBehind.Clear();
         }
@@ -64,7 +62,7 @@ namespace Kart.Track
             }
             else if (passedBackward)
             {
-                CheckpointsPassed = Mathf.Max(0, CheckpointsPassed - 1);
+                CheckpointsPassed--;
                 var pEvent = new CheckpointPassedEvent
                 {
                     Checkpoint = cp,
@@ -74,16 +72,10 @@ namespace Kart.Track
                 };
                 OnCheckpointPassed?.Invoke(pEvent);
                 Bus<CheckpointPassedEvent>.Raise(pEvent);
-                
                 OnWrongWay?.Invoke();
             }
 
             _entryFromBehind.Remove(cp);
-        }
-
-        public void SetTrack(CheckpointTrack track)
-        {
-            _track = track;
         }
 
         public event Action OnWrongWay;

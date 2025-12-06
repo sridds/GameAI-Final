@@ -7,11 +7,11 @@ namespace Kart.Track
 {
     // Pattern ensures that you're not getting multiple penalties for hitting two walls at once
     // Take the maximum penalty per tick of all the ones you're bumping into
-    public class WallBumper : MonoBehaviour
+    public class WallSensor : MonoBehaviour
     {
         public UnityEvent<float> onApplyPenalty;
         
-        private List<Wall> collidingWalls = new List<Wall>();
+        private readonly List<Wall> collidingWalls = new List<Wall>();
         private float maxInitialPenalty;
         private float maxContinuousPenalty;
 

@@ -1,8 +1,10 @@
 using System;
 using Kart.Race;
 using Kart.Track;
+using Kart.Track.Deprecated;
 using UnityEngine;
-namespace Kart.Car
+
+namespace Kart.Car.Deprecated
 {
     [Obsolete("Use Kart.Car.KartController class instead")]
     public class CarDriver : MonoBehaviour

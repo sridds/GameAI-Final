@@ -3,6 +3,7 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Kart.Car
 {
@@ -10,7 +11,7 @@ namespace Kart.Car
     public class KartAgent : Agent, IKartInput
     {
         [SerializeField] private CheckpointTrack track;
-        [SerializeField] private WallBumper wallBumper;
+        [FormerlySerializedAs("wallBumper")] [SerializeField] private WallSensor wallSensor;
         [SerializeField] private Transform spawnPosition;
 
         private KartController _kart;
