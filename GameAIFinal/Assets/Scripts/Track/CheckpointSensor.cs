@@ -74,6 +74,8 @@ namespace Kart.Track
                 };
                 OnCheckpointPassed?.Invoke(pEvent);
                 Bus<CheckpointPassedEvent>.Raise(pEvent);
+                
+                OnWrongWay?.Invoke();
             }
 
             _entryFromBehind.Remove(cp);
@@ -96,5 +98,7 @@ namespace Kart.Track
 
             return null;
         }
+
+        public event Action OnWrongWay;
     }
 }
