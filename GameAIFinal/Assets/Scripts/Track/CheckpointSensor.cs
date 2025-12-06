@@ -14,7 +14,7 @@ namespace Kart.Track
         private CheckpointTrack _track;
         
         public event Action<CheckpointPassedEvent> OnCheckpointPassed;
-        public Checkpoint LastCheckpointPassed { get; private set; }
+        public Checkpoint LastCheckpointPassedForward { get; private set; }
         public int CheckpointsPassed { get; private set; }
 
         private void Awake()
@@ -24,7 +24,7 @@ namespace Kart.Track
 
         public void Reset()
         {
-            LastCheckpointPassed = initialCheckpointBehind;
+            LastCheckpointPassedForward = initialCheckpointBehind;
             CheckpointsPassed = 0;
             _entryFromBehind.Clear();
         }
@@ -52,7 +52,7 @@ namespace Kart.Track
             if (passedForward)
             {
                 CheckpointsPassed++;
-                LastCheckpointPassed = cp;
+                LastCheckpointPassedForward = cp;
                 var pEvent = new CheckpointPassedEvent
                 {
                     Checkpoint = cp,
@@ -84,19 +84,6 @@ namespace Kart.Track
         public void SetTrack(CheckpointTrack track)
         {
             _track = track;
-        }
-
-        public Checkpoint GetNextCheckpoint()
-        {
-            if (_track == null) return null;
-            var collector = GetComponent<CheckpointCollector>();
-            if (collector != null)
-            {
-                collector.cpBehind = LastCheckpointPassed;
-                return _track.GetNextCheckpoint(collector);
-            }
-
-            return null;
         }
 
         public event Action OnWrongWay;

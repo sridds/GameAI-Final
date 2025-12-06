@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   racerName: Mario
   minimapIcon: {fileID: 339457741, guid: dacc37a7b6bb9ca4e9d4caeadf8a7650, type: 3}
-  carPrefab: {fileID: 921773951978566726, guid: 5b36c4b47d4e49e479c51a4486414f97, type: 3}
+  legacyCarPrefab: {fileID: 0}
+  kartPrefab: {fileID: 3463171613152343711, guid: 5b36c4b47d4e49e479c51a4486414f97, type: 3}

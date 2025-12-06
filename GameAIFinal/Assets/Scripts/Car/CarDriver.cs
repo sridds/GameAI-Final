@@ -4,6 +4,7 @@ using Kart.Track;
 using UnityEngine;
 namespace Kart.Car
 {
+    [Obsolete("Use Kart.Car.KartController class instead")]
     public class CarDriver : MonoBehaviour
     {
         public RacerSO racerID;

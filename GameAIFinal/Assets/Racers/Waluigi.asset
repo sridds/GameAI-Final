@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   racerName: Waluigi
   minimapIcon: {fileID: -1887920494, guid: dacc37a7b6bb9ca4e9d4caeadf8a7650, type: 3}
-  carPrefab: {fileID: 8805970429885055571, guid: 5458146889b8175439f213a230502a7d, type: 3}
+  legacyCarPrefab: {fileID: 0}
+  kartPrefab: {fileID: 5111712907329929354, guid: 5458146889b8175439f213a230502a7d, type: 3}

@@ -24,14 +24,14 @@ namespace Kart
 
     public class RaceStateUpdated : IGameEvent
     {
-        public ERaceState currentState;
-        public ERaceState previousState;
+        public ERaceState CurrentState;
+        public ERaceState PreviousState;
     }
 
     public class RacerPlacementUpdated : IGameEvent
     {
-        public int placement;
-        public RacerSO racerReference;
+        public int Placement;
+        public RacerSO RacerReference;
     }
 
     public class TimerAnnouncement : IGameEvent
@@ -44,9 +44,9 @@ namespace Kart
             Go
         }
 
-        public ETimerAnnouncement timerAnnouncementType;
+        public ETimerAnnouncement TimerAnnouncementType;
 
-        public string[] timerMapping = { "3", "2", "1", "GO!" };
+        public readonly string[] TimerMapping = { "3", "2", "1", "GO!" };
     }
 
     public class CheckpointPassedEvent : IGameEvent
@@ -59,7 +59,8 @@ namespace Kart
 
     public class SpectatorChangeCamera : IGameEvent
     {
-        public Camera camera;
-        public CarDriver carReference; // may be null
+        public RaceManager Race;
+        public Camera Camera;
+        public KartController CarReference; // may be null
     }
 }

@@ -1,32 +1,39 @@
-﻿using UnityEngine;
+﻿using Kart.Race;
+using UnityEngine;
 
 namespace Kart.Car
 {
     public class KartController : MonoBehaviour
     {
-        [Header("References")] [SerializeField]
-        private Rigidbody rb;
+        [Header("References")] 
+        [SerializeField] private RacerSO racerID;
+        public RacerSO RacerID => racerID;
+        [SerializeField] private Rigidbody rb;
+        [SerializeField] private Camera cam;
 
         [SerializeField] private Transform carHolder;
         [SerializeField] private Transform carOrientation;
 
-        [Header("Movement")] [SerializeField] private float steering = 100f;
+        [Header("Movement")] 
+        [SerializeField] private float steering = 100f;
 
         [SerializeField] private float acceleration = 15f;
         [SerializeField] private float brakeForce = 15f;
         [SerializeField] private float gravity = 20f;
 
-        [Header("Physics")] [SerializeField] private float downforceMultiplier = 2f;
-
+        [Header("Physics")] 
+        [SerializeField] private float downforceMultiplier = 2f;
         [SerializeField] private float counterSteerStrength = 0.3f;
         [SerializeField] private float angularDrag = 0.8f;
         [SerializeField] private LayerMask groundLayer;
+        
         private float _currentRotation;
         private float _currentSpeed;
 
         private IKartInput _input;
         private float _targetRotation;
         private float _targetSpeed;
+        public Camera Cam => cam;
 
         public bool IsGrounded { get; private set; }
 
@@ -135,8 +142,9 @@ namespace Kart.Car
             _targetRotation = 0f;
         }
 
-        public void Teleport(Vector3 position, Quaternion rotation)
+        public void Initialize(RacerSO racerSO, Vector3 position, Quaternion rotation)
         {
+            this.racerID = racerSO;
             rb.position = position;
             rb.rotation = rotation;
             carHolder.position = position - new Vector3(0, 0.2f, 0);

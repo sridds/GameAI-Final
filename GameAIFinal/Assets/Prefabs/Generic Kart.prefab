@@ -90,7 +90,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4426824962866279666}
-  - component: {fileID: 8680326082748015173}
+  - component: {fileID: 4950531491966378140}
+  - component: {fileID: 4563073206154872443}
   m_Layer: 0
   m_Name: Generic Kart
   m_TagString: Untagged
@@ -115,7 +116,7 @@ Transform:
   - {fileID: 6113849472389291415}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8680326082748015173
+--- !u!114 &4950531491966378140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,26 +125,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 1407071230113221514}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76e872c99dae8ed4da955b1f8974e832, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ae4acc43d0246d9ae58eea5733fa804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   racerID: {fileID: 0}
-  currentLap: 1
-  _carHolder: {fileID: 4386652521913068510}
-  _carOrientation: {fileID: 653113725045407017}
-  _rigidbody: {fileID: 1057123627408007406}
-  _camera: {fileID: 9105987653577338998}
-  _checkpointCollector: {fileID: 0}
-  _steering: 15
-  _acceleration: 30
-  _gravity: 25
-  _groundLayer:
+  rb: {fileID: 1057123627408007406}
+  cam: {fileID: 9105987653577338998}
+  carHolder: {fileID: 4386652521913068510}
+  carOrientation: {fileID: 653113725045407017}
+  steering: 15
+  acceleration: 30
+  brakeForce: 15
+  gravity: 25
+  downforceMultiplier: 2
+  counterSteerStrength: 0.3
+  angularDrag: 0.8
+  groundLayer:
     serializedVersion: 2
     m_Bits: 64
-  _angularDrag: 0.8
-  _downforceMultiplier: 2
-  _brakeForce: 15
-  _counterSteerStrength: 0.3
+--- !u!114 &4563073206154872443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407071230113221514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 480248058a63d2447bbf7ac076699edd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brakeKey: 304
+  driftKey: 32
 --- !u!1 &3918445203264599927
 GameObject:
   m_ObjectHideFlags: 0
@@ -434,6 +447,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: raceCarWhite
       objectReference: {fileID: 0}
+    - target: {fileID: 8449996119470504636, guid: c45a1436a22269b45abbb2fa2c05c6d1, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: ec6b7eafc716dc44485ea2829d4f2e0c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

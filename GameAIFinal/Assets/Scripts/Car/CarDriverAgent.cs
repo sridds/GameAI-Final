@@ -1,3 +1,4 @@
+using System;
 using Kart.Track;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
@@ -8,6 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace Kart.Car
 {
+    [Obsolete("Use Kart.Car.KartController class instead")]
     [RequireComponent(typeof(CarDriver))]
     public class CarDriverAgent : Agent
     {

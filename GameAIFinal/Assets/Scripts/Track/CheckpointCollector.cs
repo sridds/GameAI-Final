@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Kart.Track
 {
+    [Obsolete("Use Kart.Car.KartController class instead")]
     [RequireComponent(typeof(Collider))]
     public class CheckpointCollector : MonoBehaviour
     {

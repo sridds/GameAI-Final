@@ -46,7 +46,7 @@ namespace Kart
         private void UpdateActiveMenus(RaceStateUpdated evt)
         {
             // Display driver / spectator UI if the timer has started
-            switch (evt.currentState)
+            switch (evt.CurrentState)
             {
                 case ERaceState.Pregame:
                     _pregameHolder.SetActive(true);
@@ -68,7 +68,7 @@ namespace Kart
 
         private void Update()
         {
-            _timeText.text = "Time: " + RaceManager.instance.TimeElapsed.ToString("F2");
+            _timeText.text = "Time: " + RaceManager.Instance.TimeElapsed.ToString("F2");
         }
 
         public void DisplayTimerAnnouncement(TimerAnnouncement evt)
@@ -80,10 +80,10 @@ namespace Kart
 
             // Start animation
             _countdownText.DOKill(false);
-            _countdownText.text = evt.timerMapping[(int)evt.timerAnnouncementType];
+            _countdownText.text = evt.TimerMapping[(int)evt.TimerAnnouncementType];
 
             // number animation
-            if(evt.timerAnnouncementType != TimerAnnouncement.ETimerAnnouncement.Go)
+            if(evt.TimerAnnouncementType != TimerAnnouncement.ETimerAnnouncement.Go)
             {
                 _countdownText.DOFade(0.0f, 0.5f).SetEase(Ease.InQuad);
                 _countdownText.transform.DOScale(1.2f, 0.5f).SetEase(Ease.OutQuad);
@@ -99,7 +99,7 @@ namespace Kart
         public void UpdateSpectatorUI(SpectatorChangeCamera evt)
         {
             // if the spectator was updated and there is no racer referenced, disable non-relevant UI
-            if(evt.carReference == null)
+            if(evt.CarReference == null)
             {
                 _placementHolder.gameObject.SetActive(false);
                 _lapHolder.gameObject.SetActive(false);
@@ -111,19 +111,19 @@ namespace Kart
                 _lapHolder.gameObject.SetActive(true);
 
                 // set lap text
-                _lapText.text = $"Lap: {evt.carReference.currentLap}/3";
+                _lapText.text = $"Lap: {evt.Race.GetCurrentLap(evt.CarReference)}/{evt.Race.Laps}";
             }
 
             _spectatorTargetText.text = "Spectating: ";
             // set text to racer name
-            if (evt.carReference != null)
+            if (evt.CarReference != null)
             {
-                _spectatorTargetText.text += evt.carReference.racerID.racerName;
+                _spectatorTargetText.text += evt.CarReference.RacerID.racerName;
             }
             // set text to camera name
             else
             {
-                _spectatorTargetText.text += evt.camera.gameObject.name;
+                _spectatorTargetText.text += evt.Camera.gameObject.name;
             }
         }
 
@@ -132,14 +132,14 @@ namespace Kart
         /// </summary>
         public void UpdatePlacement(RacerPlacementUpdated evt)
         {
-            if (evt.racerReference == RaceManager.currentSpectatedRacer) return;
+            if (evt.RacerReference == RaceManager.CurrentSpectatedRacer) return;
 
-            string placeStr = evt.placement.ToString();
+            string placeStr = evt.Placement.ToString();
 
             // Create placement string
-            if (evt.placement == 1) placeStr += "st";
-            else if (evt.placement == 2) placeStr += "nd";
-            else if (evt.placement == 3) placeStr += "rd";
+            if (evt.Placement == 1) placeStr += "st";
+            else if (evt.Placement == 2) placeStr += "nd";
+            else if (evt.Placement == 3) placeStr += "rd";
             else placeStr += "th";
 
             // stop current animation before playing new one

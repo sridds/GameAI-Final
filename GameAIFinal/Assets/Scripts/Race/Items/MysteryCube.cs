@@ -14,7 +14,7 @@ namespace Kart.Race.Items
         public void OnTriggerEnter(Collider other)
         {
             // must be a driver
-            if (!other.gameObject.TryGetComponent<CarDriver>(out CarDriver driver)) return;
+            if (!other.gameObject.TryGetComponent<KartController>(out KartController driver)) return;
 
             Debug.Log("Driver collided with mystery cube!");
         }

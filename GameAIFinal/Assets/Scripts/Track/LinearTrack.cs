@@ -7,13 +7,16 @@ namespace Kart.Track
 {
     public class LinearTrack : CheckpointTrack, ICheckpointTrack
     {
-        [SerializeField] private List<Checkpoint> checkpoints = new();
-
         public int TotalCheckpoints => checkpoints.Count;
 
-        public Checkpoint GetNextCheckpoint(CheckpointSensor sensor)
+        public override Checkpoint GetFirstCheckpoint()
         {
-            var idx = checkpoints.IndexOf(sensor.LastCheckpointPassed);
+            return checkpoints[0];
+        }
+
+        public override Checkpoint GetNextCheckpoint(CheckpointSensor sensor)
+        {
+            var idx = checkpoints.IndexOf(sensor.LastCheckpointPassedForward);
             return checkpoints[(idx + 1) % checkpoints.Count];
         }
 
@@ -27,11 +30,6 @@ namespace Kart.Track
             return checkpoints.Count == 0
                 ? 0f
                 : (float)(sensor.CheckpointsPassed % checkpoints.Count) / checkpoints.Count;
-        }
-
-        public override Checkpoint GetNextCheckpoint(CheckpointCollector collector)
-        {
-            return checkpoints[checkpoints.IndexOf(collector.cpBehind) % checkpoints.Count];
         }
 
         public void PopulateCheckpoints()

@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   racerName: Luigi
   minimapIcon: {fileID: 1570839572, guid: dacc37a7b6bb9ca4e9d4caeadf8a7650, type: 3}
-  carPrefab: {fileID: 7317993145857639695, guid: 9167e0a9e0ed0dc4aac449a054bb69ee, type: 3}
+  legacyCarPrefab: {fileID: 0}
+  kartPrefab: {fileID: 6434481972212139990, guid: 9167e0a9e0ed0dc4aac449a054bb69ee, type: 3}

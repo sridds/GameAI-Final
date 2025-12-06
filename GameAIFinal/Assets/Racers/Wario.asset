@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   racerName: Wario
   minimapIcon: {fileID: 1205866450, guid: dacc37a7b6bb9ca4e9d4caeadf8a7650, type: 3}
-  carPrefab: {fileID: 2928584433963885547, guid: 8e5e057601c62da469f1ad253899e5f1, type: 3}
+  legacyCarPrefab: {fileID: 0}
+  kartPrefab: {fileID: 1468464555132543282, guid: 8e5e057601c62da469f1ad253899e5f1, type: 3}

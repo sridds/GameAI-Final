@@ -7,40 +7,32 @@ namespace Kart.Race
 {
     public class RaceSpawner : MonoBehaviour
     {
-        [SerializeField] private List<RacerSO> racerCatalogue = new List<RacerSO>();
+        [SerializeField] private List<RacerSO> racerCatalogue = new();
         [SerializeField] private Transform[] orderedSpawnPoints;
         [SerializeField] private bool spawnRandomly;
 
-        public List<CarDriver> Spawn()
+        public List<KartController> Spawn()
         {
-            List<CarDriver> result = new List<CarDriver>();
-            Debug.Log($"[{name}]: Spawning Racers");
+            var result = new List<KartController>();
 
             if (spawnRandomly)
-            {
-                int n = racerCatalogue.Count;
-                while (n > 1)
+                for (var n = racerCatalogue.Count - 1; n > 0; n--)
                 {
-                    n--;
-                    int k = Random.Range(0, n + 1); // Get a random index from 0 to n (inclusive)
-                    RacerSO value = racerCatalogue[k];
-                    racerCatalogue[k] = racerCatalogue[n];
-                    racerCatalogue[n] = value;
+                    var k = Random.Range(0, n + 1);
+                    (racerCatalogue[k], racerCatalogue[n]) = (racerCatalogue[n], racerCatalogue[k]);
                 }
-            }
 
-            // set positions
-            for(int i = 0; i < racerCatalogue.Count; i++)
+            for (var i = 0; i < racerCatalogue.Count && i < orderedSpawnPoints.Length; i++)
             {
-                result.Add(SpawnRacer(racerCatalogue[i], orderedSpawnPoints[i].transform.position));
-            }
-            
-            return result;
-        }
+                var prefab = racerCatalogue[i].kartPrefab;
+                if (prefab == null) continue;
 
-        private CarDriver SpawnRacer(RacerSO racer, Vector3 position)
-        {
-            return Instantiate(racer.carPrefab, position, Quaternion.identity);
+                var instance = Instantiate(prefab, orderedSpawnPoints[i].position, orderedSpawnPoints[i].rotation);
+                instance.name = racerCatalogue[i].racerName;
+                result.Add(instance);
+            }
+
+            return result;
         }
     }
 }
