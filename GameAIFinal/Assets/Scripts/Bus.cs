@@ -56,6 +56,12 @@ namespace Kart
         public float RewardMultiplier;
         public int TotalPassed;
     }
+    
+    public class WallHitEvent : IGameEvent
+    {
+        public Wall Wall;
+        public WallSensor WallSensor;
+    }
 
     public class SpectatorChangeCamera : IGameEvent
     {

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1057123627408007406}
   - component: {fileID: 5818100849574397341}
   - component: {fileID: 5899622828428242743}
+  - component: {fileID: 6022809284279099733}
   m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
@@ -94,7 +95,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cee3bdfe7f14a358ccee4faf8c6ae5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialCheckpointBehind: {fileID: 0}
+--- !u!114 &6022809284279099733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1636292353380630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97e578655005c3745bb5075852cf09b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1407071230113221514
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,6 +118,8 @@ GameObject:
   - component: {fileID: 4426824962866279666}
   - component: {fileID: 4950531491966378140}
   - component: {fileID: 4563073206154872443}
+  - component: {fileID: 4163877368094928239}
+  - component: {fileID: -7082247028003090932}
   m_Layer: 0
   m_Name: Generic Kart
   m_TagString: Untagged
@@ -171,6 +185,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brakeKey: 304
   driftKey: 32
+--- !u!114 &4163877368094928239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407071230113221514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 1
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 01000000
+    VectorActionSize: 01000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: Kart
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_DeterministicInference: 0
+  m_ObservableAttributeHandling: 0
+--- !u!114 &-7082247028003090932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407071230113221514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e24068ebaa4bc286cbb4a3d675edb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  wallSensor: {fileID: 6022809284279099733}
+  checkpointSensor: {fileID: 5899622828428242743}
 --- !u!1 &3918445203264599927
 GameObject:
   m_ObjectHideFlags: 0

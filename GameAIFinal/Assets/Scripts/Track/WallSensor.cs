@@ -9,7 +9,7 @@ namespace Kart.Track
     // Take the maximum penalty per tick of all the ones you're bumping into
     public class WallSensor : MonoBehaviour
     {
-        public UnityEvent<float> onApplyPenalty;
+        public Action<float> OnApplyPenalty;
         
         private readonly List<Wall> collidingWalls = new List<Wall>();
         private float maxInitialPenalty;
@@ -21,7 +21,7 @@ namespace Kart.Track
             if (maxContinuousPenalty == 0)
                 return;
             
-            onApplyPenalty?.Invoke(maxContinuousPenalty * Time.fixedDeltaTime);
+            OnApplyPenalty?.Invoke(maxContinuousPenalty * Time.fixedDeltaTime);
         }
 
         private void OnCollisionEnter(Collision other)
@@ -38,7 +38,8 @@ namespace Kart.Track
             if (maxContinuousPenalty > lastInitialPenalty)
             {
                 float penaltyDiff = maxInitialPenalty - lastInitialPenalty;
-                onApplyPenalty?.Invoke(penaltyDiff);
+                OnApplyPenalty?.Invoke(penaltyDiff);
+                RewardThisFrame += penaltyDiff;
             }
         }
         
@@ -68,5 +69,7 @@ namespace Kart.Track
                     maxInitialPenalty = wall.initialPenaltyMultiplier;
             }
         }
+
+        public float RewardThisFrame { get; private set; }
     }
 }

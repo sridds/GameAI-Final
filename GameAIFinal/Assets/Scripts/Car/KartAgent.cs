@@ -1,18 +1,21 @@
-﻿using Kart.Track;
+﻿using System;
+using Kart.Track;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Kart.Car
 {
     [RequireComponent(typeof(KartController))]
     public class KartAgent : Agent, IKartInput
     {
-        [SerializeField] private CheckpointTrack track;
         [FormerlySerializedAs("wallBumper")] [SerializeField] private WallSensor wallSensor;
-        [SerializeField] private Transform spawnPosition;
+        [SerializeField] private CheckpointSensor checkpointSensor;
+        // private Transform spawnPosition;
 
         private KartController _kart;
 
@@ -23,6 +26,25 @@ namespace Kart.Car
             _kart.SetInputSource(this);
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+            checkpointSensor.OnCheckpointPassed += OnCheckpointPassed;
+            wallSensor.OnApplyPenalty += AddReward;
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            checkpointSensor.OnCheckpointPassed -= OnCheckpointPassed;
+            wallSensor.OnApplyPenalty -= AddReward;
+        }
+
+        private void OnCheckpointPassed(CheckpointPassedEvent checkpointPassedEvent)
+        {
+            AddReward(checkpointPassedEvent.RewardMultiplier);
+        }
+
         public float Throttle { get; private set; }
         public float Steering { get; private set; }
         public bool IsBraking => false;
@@ -30,13 +52,13 @@ namespace Kart.Car
 
         public override void OnEpisodeBegin()
         {
-            Vector3 pos = spawnPosition.position + new Vector3(
-                Random.Range(-5f, 5f),
-                0f,
-                Random.Range(-5f, 5f)
-            );
-            transform.position = pos;
-            transform.forward = spawnPosition.forward;
+            // Vector3 pos = spawnPosition.position + new Vector3(
+            //     Random.Range(-5f, 5f),
+            //     0f,
+            //     Random.Range(-5f, 5f)
+            // );
+            // transform.position = pos;
+            // transform.forward = spawnPosition.forward;
             _kart.ResetState();
         }
 

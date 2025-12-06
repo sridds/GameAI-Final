@@ -16,14 +16,14 @@ namespace Kart.Race
         RaceEnded
     }
 
-    public class RacerPerformance
+    public class RaceParticipant
     {
         private KartController kart;
         public int Laps;
         public int CheckpointsPassedInLap;
         public int CheckpointsPassed;
 
-        public RacerPerformance(KartController kart)
+        public RaceParticipant(KartController kart)
         {
             this.kart = kart;
             Laps = 0;
@@ -54,7 +54,7 @@ namespace Kart.Race
         [FormerlySerializedAs("_raceStartSound")] [SerializeField] private SoundStreamSO raceStartSound;
         [FormerlySerializedAs("_spectatorChangeSound")] [SerializeField] private SoundStreamSO spectatorChangeSound;
 
-        public Dictionary<KartController, RacerPerformance> Racers = new Dictionary<KartController, RacerPerformance>();
+        public Dictionary<KartController, RaceParticipant> Racers = new Dictionary<KartController, RaceParticipant>();
         
         public List<KartController> OrderedRacers { get; private set; } = new();
         
@@ -217,14 +217,14 @@ namespace Kart.Race
             var racers = spawner.Spawn();
             
             OrderedRacers.Clear();
-            Racers = new Dictionary<KartController, RacerPerformance>();
+            Racers = new Dictionary<KartController, RaceParticipant>();
             foreach (var racer in racers)
             {
                 var kart = racer.GetComponent<KartController>();
                 if (kart != null)
                 {
                     OrderedRacers.Add(kart);
-                    Racers.Add(kart, new RacerPerformance(kart));
+                    Racers.Add(kart, new RaceParticipant(kart));
                 }
                 else
                 {
