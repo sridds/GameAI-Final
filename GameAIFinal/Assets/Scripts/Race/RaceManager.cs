@@ -78,7 +78,44 @@ namespace Kart.Race
 
         private void OnCheckpointPassed(CheckpointPassedEvent evt)
         {
-            // TODO: Track racers passing checkpoints!
+            // find kart that passed checkpoint
+            var kartSensor = evt.Checkpoint.Col.bounds.center;
+            KartController passingKart = null;
+
+            foreach (var kart in OrderedRacers)
+            {
+                var sensor = kart.GetComponent<CheckpointSensor>();
+
+                if (sensor != null && sensor.LastCheckpointPassedForward == evt.Checkpoint)
+                {
+                    passingKart = kart;
+                    break;
+                }
+            }
+
+            if (passingKart == null) return;
+
+            var participant = Racers[passingKart];
+
+            // only count forward passes
+            if (evt.IsForward)
+            {
+                participant.CheckpointsPassed++;
+                participant.CheckpointsPassedInLap++;
+
+                // if completed lap
+                if (participant.CheckpointsPassedInLap >= track.CheckpointCount)
+                {
+                    participant.Laps++;
+                    participant.CheckpointsPassedInLap = 0;
+
+                    // if race finished
+                    if (participant.Laps >= laps)
+                    {
+                        ChangeRaceState(ERaceState.RaceEnded);
+                    }
+                }
+            }
         }
 
         private void Start()
