@@ -39,6 +39,7 @@ namespace Kart
             Bus<SpectatorChangeCamera>.OnEvent += UpdateSpectatorUI;
             Bus<TimerAnnouncement>.OnEvent += DisplayTimerAnnouncement;
             Bus<RaceStateUpdated>.OnEvent += UpdateActiveMenus;
+            Bus<RacerLapUpdated>.OnEvent += UpdateLapDisplay;
 
             _placementText.text = "";
         }
@@ -162,6 +163,15 @@ namespace Kart
             yield return _placementText.DOFade(1.0f, 0.25f).SetEase(Ease.OutQuad).WaitForCompletion();
 
             currentPlacementCoroutine = null;
+        }
+
+        private void UpdateLapDisplay(RacerLapUpdated evt)
+        {
+            // only update if spectating this racer
+            if (evt.Racer == RaceManager.CurrentSpectatedRacer)
+            {
+                _lapText.text = $"Lap: {evt.CurrentLap}/{evt.TotalLaps}";
+            }
         }
     }
 }

@@ -69,4 +69,12 @@ namespace Kart
         public Camera Camera;
         public KartController CarReference; // may be null
     }
+
+    // for driver hud, not actually for racemanager tracking
+    public class RacerLapUpdated : IGameEvent
+    {
+        public KartController Racer;
+        public int CurrentLap;
+        public int TotalLaps;
+    }
 }

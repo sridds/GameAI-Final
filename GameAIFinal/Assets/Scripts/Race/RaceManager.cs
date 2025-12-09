@@ -79,7 +79,6 @@ namespace Kart.Race
         private void OnCheckpointPassed(CheckpointPassedEvent evt)
         {
             // find kart that passed checkpoint
-            var kartSensor = evt.Checkpoint.Col.bounds.center;
             KartController passingKart = null;
 
             foreach (var kart in OrderedRacers)
@@ -108,6 +107,14 @@ namespace Kart.Race
                 {
                     participant.Laps++;
                     participant.CheckpointsPassedInLap = 0;
+
+                    // raise lap update event
+                    Bus<RacerLapUpdated>.Raise(new RacerLapUpdated()
+                    {
+                        Racer = passingKart,
+                        CurrentLap = participant.Laps,
+                        TotalLaps = laps
+                    });
 
                     // if race finished
                     if (participant.Laps >= laps)
@@ -161,18 +168,53 @@ namespace Kart.Race
 
         private void UpdateRaceLeaderboard()
         {
-            // we need to track the furthest checkpoint, along with which lap it was recorded in, and adjust all placements based on this. 
-
-            // itll be based on the most recent checkpoint, itll compare all distances of each racer relative to the most recent checkpoint reached
-            // then after grabbing all distances itll compare them to determine placements
-            for(int i = 0; i < OrderedRacers.Count; i++)
+            //sort racers by: laps, checkpoints in lap, distance to next checkpoint
+            OrderedRacers.Sort((a, b) =>
             {
-                // determine all racers and the last checkpoint reached associated with them.
+                var participantA = Racers[a];
+                var participantB = Racers[b];
 
-                // if there are multiple racers associated with the same last checkpoint, determine where they are relative to one another and get placement
+                // laps sort
+                if (participantA.Laps != participantB.Laps)
+                {
+                    return participantB.Laps.CompareTo(participantA.Laps);
+                }
 
-                // if there is only one racer, that one immediately deserves the spot
+                // checkpoints in current lap sort
+                if (participantA.CheckpointsPassedInLap != participantB.CheckpointsPassedInLap)
+                {
+                    return participantB.CheckpointsPassedInLap.CompareTo(participantA.CheckpointsPassedInLap);
+                }
 
+                // distane to next checkpoint sort
+                var sensorA = a.GetComponent<CheckpointSensor>();
+                var sensorB = b.GetComponent<CheckpointSensor>();
+
+                if (sensorA == null || sensorB == null) return 0;
+
+                var nextCheckpointA = track.GetNextCheckpoint(sensorA);
+                var nextCheckpointB = track.GetNextCheckpoint(sensorB);
+
+                if (nextCheckpointA == null || nextCheckpointB == null) return 0;
+
+                // racers on different checkpoints
+                if (nextCheckpointA != nextCheckpointB) return 0;
+
+                // calculate distance to next checkpoint
+                var distA = Vector3.Distance(a.transform.position, nextCheckpointA.Col.bounds.center);
+                var distB = Vector3.Distance(b.transform.position, nextCheckpointB.Col.bounds.center);
+
+                return distA.CompareTo(distB);
+            });
+
+            // raise placement events for changed pos
+            for (int i = 0; i < OrderedRacers.Count; i++)
+            {
+                Bus<RacerPlacementUpdated>.Raise(new RacerPlacementUpdated()
+                {
+                    Placement = i + 1,
+                    RacerReference = OrderedRacers[i].RacerID
+                });
             }
         }
 
