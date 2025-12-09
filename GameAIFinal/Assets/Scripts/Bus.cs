@@ -55,6 +55,7 @@ namespace Kart
         public bool IsForward;
         public float RewardMultiplier;
         public int TotalPassed;
+        public KartController Kart;
     }
     
     public class WallHitEvent : IGameEvent

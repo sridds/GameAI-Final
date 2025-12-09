@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kart.Car;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,34 +48,42 @@ namespace Kart.Track
             var passedForward = enteredFromBehind && exitedAhead;
             var passedBackward = !enteredFromBehind && !exitedAhead;
 
+            var kart = GetComponentInParent<KartController>();
+
             if (passedForward)
             {
                 CheckpointsPassed++;
                 LastCheckpointPassedForward = cp;
+
                 var pEvent = new CheckpointPassedEvent
                 {
                     Checkpoint = cp,
-                    IsForward = true, TotalPassed = CheckpointsPassed,
-                    RewardMultiplier = cp.GetRewardMultiplier()
+                    IsForward = true,
+                    TotalPassed = CheckpointsPassed,
+                    RewardMultiplier = cp.GetRewardMultiplier(),
+                    Kart = kart
                 };
+
                 OnCheckpointPassed?.Invoke(pEvent);
                 Bus<CheckpointPassedEvent>.Raise(pEvent);
             }
             else if (passedBackward)
             {
                 CheckpointsPassed--;
+
                 var pEvent = new CheckpointPassedEvent
                 {
                     Checkpoint = cp,
                     IsForward = false,
                     TotalPassed = CheckpointsPassed,
-                    RewardMultiplier = -cp.GetRewardMultiplier()
+                    RewardMultiplier = -cp.GetRewardMultiplier(),
+                    Kart = kart
                 };
+
                 OnCheckpointPassed?.Invoke(pEvent);
                 Bus<CheckpointPassedEvent>.Raise(pEvent);
                 OnWrongWay?.Invoke();
             }
-
             _entryFromBehind.Remove(cp);
         }
 

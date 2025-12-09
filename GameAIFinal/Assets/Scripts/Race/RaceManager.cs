@@ -78,37 +78,24 @@ namespace Kart.Race
 
         private void OnCheckpointPassed(CheckpointPassedEvent evt)
         {
-            // find kart that passed checkpoint
-            KartController passingKart = null;
-
-            foreach (var kart in OrderedRacers)
-            {
-                var sensor = kart.GetComponent<CheckpointSensor>();
-
-                if (sensor != null && sensor.LastCheckpointPassedForward == evt.Checkpoint)
-                {
-                    passingKart = kart;
-                    break;
-                }
-            }
-
-            if (passingKart == null) return;
+            // get kart from event
+            var passingKart = evt.Kart;
+            if (passingKart == null || !Racers.ContainsKey(passingKart)) return;
 
             var participant = Racers[passingKart];
 
-            // only count forward passes
             if (evt.IsForward)
             {
                 participant.CheckpointsPassed++;
                 participant.CheckpointsPassedInLap++;
 
-                // if completed lap
+                // lap check
                 if (participant.CheckpointsPassedInLap >= track.CheckpointCount)
                 {
                     participant.Laps++;
                     participant.CheckpointsPassedInLap = 0;
 
-                    // raise lap update event
+                    // lap update event
                     Bus<RacerLapUpdated>.Raise(new RacerLapUpdated()
                     {
                         Racer = passingKart,
@@ -116,7 +103,6 @@ namespace Kart.Race
                         TotalLaps = laps
                     });
 
-                    // if race finished
                     if (participant.Laps >= laps)
                     {
                         ChangeRaceState(ERaceState.RaceEnded);
@@ -216,6 +202,22 @@ namespace Kart.Race
                     RacerReference = OrderedRacers[i].RacerID
                 });
             }
+
+            DebugRacePositions();
+        }
+
+        private void DebugRacePositions()
+        {
+            Debug.Log("=== RACE POSITIONS ===");
+
+            for (int i = 0; i < OrderedRacers.Count; i++)
+            {
+                var kart = OrderedRacers[i];
+                var participant = Racers[kart];
+                Debug.Log($"p{i + 1}: {kart.RacerID.racerName} | lap {participant.Laps}/{laps} | cp {participant.CheckpointsPassedInLap}/{track.CheckpointCount} | total cp: {participant.CheckpointsPassed}");
+            }
+
+            Debug.Log("===================");
         }
 
         private void UpdateSpectatorInput()
