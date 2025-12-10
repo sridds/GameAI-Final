@@ -41,28 +41,30 @@ namespace Kart.Car
         private Vector3 _lastPosition;
 
         private Checkpoint _nextCheckpoint;
-        private float _stuckTimer;
 
-        // private Transform spawnPosition;
+        private float _rewardsThisEpisode;
+        private float _stuckTimer;
 
         private Vector3 spawnPos;
         private Quaternion spawnRot;
 
         [Header("Sensors")] private CheckpointTrack track;
 
-        private float _rewardsThisEpisode;
-
         protected override void Awake()
         {
             base.Awake();
             _kart = GetComponent<KartController>();
             _kart.SetInputSource(this);
-            spawnPos = transform.position;
-            spawnRot = transform.rotation;
             track = FindFirstObjectByType<CheckpointTrack>();
 
             Time.fixedDeltaTime = 0.02f;
             Physics.simulationMode = SimulationMode.FixedUpdate;
+        }
+
+        private void Start()
+        {
+            spawnPos = transform.position;
+            spawnRot = transform.rotation;
         }
 
         private void FixedUpdate()
@@ -140,7 +142,7 @@ namespace Kart.Car
                 AddReward(penalty);
                 EndEpisode();
             }
-            
+
 
             UpdateNextCheckpoint();
         }
@@ -152,17 +154,18 @@ namespace Kart.Car
 
         public void ResetPosition(bool randomize = false)
         {
-            // Reset position
-            transform.position = spawnPos;
-
-            // Reset rigidbody
-            _kart.Rb.linearVelocity = Vector3.zero;
-            _kart.Rb.angularVelocity = Vector3.zero;
-            _kart.Rb.position = spawnPos;
-            _kart.Rb.rotation = spawnRot;
-
+            // Reset main transform
             transform.position = spawnPos;
             transform.rotation = spawnRot;
+
+            // Reset rigidbody position and rotation
+            _kart.Rb.position = spawnPos;
+            _kart.Rb.rotation = spawnRot;
+            _kart.Rb.linearVelocity = Vector3.zero;
+            _kart.Rb.angularVelocity = Vector3.zero;
+
+            // Reset kart state (this will reset child transforms)
+            _kart.ResetState();
         }
 
         public override void OnEpisodeBegin()
@@ -172,9 +175,6 @@ namespace Kart.Car
             _rewardsThisEpisode = 0;
 
             ResetPosition();
-
-            // Reset kart state
-            _kart.ResetState();
 
             // Reset checkpoint sensor
             if (checkpointSensor != null)
@@ -269,7 +269,7 @@ namespace Kart.Car
                 EndEpisode();
             }
         }
-        
+
         public override void Heuristic(in ActionBuffers actionsOut)
         {
             var discreteActions = actionsOut.DiscreteActions;
