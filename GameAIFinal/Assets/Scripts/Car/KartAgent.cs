@@ -4,7 +4,6 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
 using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
 
 namespace Kart.Car
 {
@@ -15,18 +14,27 @@ namespace Kart.Car
         private WallSensor wallSensor;
 
         [SerializeField] private CheckpointSensor checkpointSensor;
-        // private Transform spawnPosition;
-
-        private Vector3 spawnPos;
-        Quaternion spawnRot;
 
         [Header("Sensors")] [SerializeField] private CheckpointTrack track;
+
+        [Header("Reward Settings")] [SerializeField]
+        private float checkpointRewardMultiplier = 1f;
+
+        [SerializeField] private float wallPenaltyMultiplier = 1f;
+        [SerializeField] private float timePenaltyPerSecond = -0.001f;
+        [SerializeField] private float velocityRewardScale = 0.0005f;
+        [SerializeField] private float facingCheckpointReward = 0.0002f;
 
         private KartController _kart;
 
         private Checkpoint _nextCheckpoint;
 
         private Rigidbody _rb;
+        // private Transform spawnPosition;
+
+        private Vector3 spawnPos;
+        private Quaternion spawnRot;
+
 
         protected override void Awake()
         {
@@ -62,9 +70,27 @@ namespace Kart.Car
             if (track != null && checkpointSensor != null) _nextCheckpoint = track.GetNextCheckpoint(checkpointSensor);
         }
 
-        private void OnCheckpointPassed(CheckpointPassedEvent checkpointPassedEvent)
+        private void OnCheckpointPassed(CheckpointPassedEvent evt)
         {
-            AddReward(checkpointPassedEvent.RewardMultiplier);
+            if (evt.IsForward)
+            {
+                var reward = evt.RewardMultiplier * checkpointRewardMultiplier;
+                AddReward(reward);
+                Debug.Log($"[KartAgent] Checkpoint! +{reward:F3}");
+            }
+            else
+            {
+                var penalty = evt.RewardMultiplier * checkpointRewardMultiplier;
+                AddReward(penalty);
+                Debug.Log($"[KartAgent] Wrong way! {penalty:F3}");
+            }
+
+            UpdateNextCheckpoint();
+        }
+
+        private void OnWallPenalty(float penalty)
+        {
+            AddReward(-Mathf.Abs(penalty) * wallPenaltyMultiplier);
         }
 
         public override void OnEpisodeBegin()
@@ -146,6 +172,24 @@ namespace Kart.Car
                 2 => -1f, // left
                 _ => 0f
             };
+
+            // Time penalty to encourage speed
+            AddReward(timePenaltyPerSecond);
+
+            // Reward for moving toward checkpoint
+            if (_nextCheckpoint != null)
+            {
+                var toCheckpoint = (_nextCheckpoint.Col.bounds.center - transform.position).normalized;
+                var velocityToward = Vector3.Dot(_rb.linearVelocity, toCheckpoint);
+
+                if (velocityToward > 0)
+                    AddReward(velocityToward * velocityRewardScale);
+
+                // Small reward for facing checkpoint
+                var facingDot = Vector3.Dot(transform.forward, toCheckpoint);
+                if (facingDot > 0)
+                    AddReward(facingDot * facingCheckpointReward);
+            }
         }
 
         public override void Heuristic(in ActionBuffers actionsOut)
