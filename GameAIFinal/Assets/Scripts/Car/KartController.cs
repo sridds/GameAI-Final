@@ -8,6 +8,7 @@ namespace Kart.Car
         [Header("References")] 
         [SerializeField] private RacerSO racerID;
         public RacerSO RacerID => racerID;
+        public Rigidbody Rb => rb;
         [SerializeField] private Rigidbody rb;
         [SerializeField] private Camera cam;
 

@@ -10,12 +10,11 @@ namespace Kart.Car
     [RequireComponent(typeof(KartController))]
     public class KartAgent : Agent, IKartInput
     {
-        [FormerlySerializedAs("wallBumper")] [SerializeField]
-        private WallSensor wallSensor;
 
+        [Header("Sensors")] 
+        private CheckpointTrack track;
+        [FormerlySerializedAs("wallBumper")] [SerializeField] private WallSensor wallSensor;
         [SerializeField] private CheckpointSensor checkpointSensor;
-
-        [Header("Sensors")] [SerializeField] private CheckpointTrack track;
 
         [Header("Reward Settings")] [SerializeField]
         private float checkpointRewardMultiplier = 1f;
@@ -36,7 +35,6 @@ namespace Kart.Car
 
         private Checkpoint _nextCheckpoint;
 
-        private Rigidbody _rb;
         // private Transform spawnPosition;
 
         private Vector3 spawnPos;
@@ -48,9 +46,9 @@ namespace Kart.Car
             base.Awake();
             _kart = GetComponent<KartController>();
             _kart.SetInputSource(this);
-            _rb = GetComponent<Rigidbody>();
             spawnPos = transform.position;
             spawnRot = transform.rotation;
+            track = FindFirstObjectByType<CheckpointTrack>();
         }
 
         protected override void OnEnable()
@@ -103,6 +101,7 @@ namespace Kart.Car
 
         public override void OnEpisodeBegin()
         {
+            Debug.Log("[KartAgent] Episode Begin");
             _episodeTime = 0f;
             _checkpointsThisEpisode = 0;
             
@@ -110,10 +109,10 @@ namespace Kart.Car
             transform.position = spawnPos;
 
             // Reset rigidbody
-            _rb.linearVelocity = Vector3.zero;
-            _rb.angularVelocity = Vector3.zero;
-            _rb.position = spawnPos;
-            _rb.rotation = spawnRot;
+            _kart.Rb.linearVelocity = Vector3.zero;
+            _kart.Rb.angularVelocity = Vector3.zero;
+            _kart.Rb.position = spawnPos;
+            _kart.Rb.rotation = spawnRot;
 
             transform.position = spawnPos;
             transform.rotation = spawnRot;
@@ -155,13 +154,13 @@ namespace Kart.Car
                 sensor.AddObservation(0f);
             }
 
-            var localVelocity = transform.InverseTransformDirection(_rb.linearVelocity);
+            var localVelocity = transform.InverseTransformDirection(_kart.Rb.linearVelocity);
             sensor.AddObservation(localVelocity.z / 30f); // forward speed
             Debug.Log($"LocalVelocity: {localVelocity}");
             sensor.AddObservation(localVelocity.x / 15f); // lateral slide
-            Debug.Log($"Velocity: {_rb.linearVelocity}");
-            sensor.AddObservation(_rb.linearVelocity.magnitude / 30f); // total speed
-            Debug.Log($"Velocity: {_rb.linearVelocity.magnitude}");
+            Debug.Log($"Velocity: {_kart.Rb.linearVelocity}");
+            sensor.AddObservation(_kart.Rb.linearVelocity.magnitude / 30f); // total speed
+            Debug.Log($"Velocity: {_kart.Rb.linearVelocity.magnitude}");
         }
 
         public override void OnActionReceived(ActionBuffers actions)
@@ -191,7 +190,7 @@ namespace Kart.Car
             if (_nextCheckpoint != null)
             {
                 var toCheckpoint = (_nextCheckpoint.Col.bounds.center - transform.position).normalized;
-                var velocityToward = Vector3.Dot(_rb.linearVelocity, toCheckpoint);
+                var velocityToward = Vector3.Dot(_kart.Rb.linearVelocity, toCheckpoint);
 
                 if (velocityToward > 0)
                     AddReward(velocityToward * velocityRewardScale);
