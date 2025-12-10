@@ -169,7 +169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #86
+      value: Checkpoint #82
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -242,7 +242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #44
+      value: Checkpoint #40
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -304,7 +304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #57
+      value: Checkpoint #53
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -487,7 +487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #16
+      value: Checkpoint #12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -580,7 +580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #82
+      value: Checkpoint #78
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -642,7 +642,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #8
+      value: Checkpoint #4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1306,7 +1306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #84
+      value: Checkpoint #80
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1578,7 +1578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #11
+      value: Checkpoint #7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1651,10 +1651,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8612120465369108397}
-  - {fileID: 498727989}
-  - {fileID: 1605755270}
-  - {fileID: 1431318764}
   - {fileID: 1011425752}
   - {fileID: 869150736}
   - {fileID: 1271407841}
@@ -1741,6 +1737,10 @@ Transform:
   - {fileID: 1989005448}
   - {fileID: 1162835621}
   - {fileID: 937444211}
+  - {fileID: 8612120465369108397}
+  - {fileID: 498727989}
+  - {fileID: 1605755270}
+  - {fileID: 1431318764}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &243358920
@@ -1756,10 +1756,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkpoints:
-  - {fileID: 7450705561403208478}
-  - {fileID: 996869898}
-  - {fileID: 1605755271}
-  - {fileID: 1486203083}
   - {fileID: 1011425753}
   - {fileID: 1275695762}
   - {fileID: 1654666241}
@@ -1846,6 +1842,10 @@ MonoBehaviour:
   - {fileID: 2145711982}
   - {fileID: 1929114169}
   - {fileID: 937444212}
+  - {fileID: 7450705561403208478}
+  - {fileID: 996869898}
+  - {fileID: 1605755271}
+  - {fileID: 1486203083}
 --- !u!1001 &247411939
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1970,7 +1970,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #31
+      value: Checkpoint #27
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2378,7 +2378,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #18
+      value: Checkpoint #14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2506,7 +2506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #45
+      value: Checkpoint #41
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2579,7 +2579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #34
+      value: Checkpoint #30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2841,7 +2841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #83
+      value: Checkpoint #79
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2969,7 +2969,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #17
+      value: Checkpoint #13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3237,7 +3237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #24
+      value: Checkpoint #20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3593,7 +3593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #75
+      value: Checkpoint #71
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3771,7 +3771,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #30
+      value: Checkpoint #26
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4237,7 +4237,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #20
+      value: Checkpoint #16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4299,7 +4299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #68
+      value: Checkpoint #64
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4361,7 +4361,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #1
+      value: Checkpoint #87
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4423,7 +4423,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #41
+      value: Checkpoint #37
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4485,7 +4485,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #26
+      value: Checkpoint #22
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4825,7 +4825,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #80
+      value: Checkpoint #76
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4949,7 +4949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #38
+      value: Checkpoint #34
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5011,7 +5011,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #29
+      value: Checkpoint #25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5271,7 +5271,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #59
+      value: Checkpoint #55
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5482,7 +5482,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #78
+      value: Checkpoint #74
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5580,7 +5580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #27
+      value: Checkpoint #23
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5690,7 +5690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #50
+      value: Checkpoint #46
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5829,7 +5829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #67
+      value: Checkpoint #63
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6246,7 +6246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #46
+      value: Checkpoint #42
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6319,7 +6319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #62
+      value: Checkpoint #58
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6640,7 +6640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #52
+      value: Checkpoint #48
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6860,14 +6860,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5550ea0642783b049bc4c0ccddd76f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  laps: 3
+  pregameTimer: 0
   spawner: {fileID: 809936922}
   track: {fileID: 243358920}
   alternateCameras:
   - {fileID: 1820158512}
-  pregameTimer: 0
-  _countdownSound: {fileID: 11400000, guid: f4b5fc72758fd6347987529d0742f8b0, type: 2}
-  _raceStartSound: {fileID: 11400000, guid: c4a3a2c35d4442a4a8a41950aae21f06, type: 2}
-  _spectatorChangeSound: {fileID: 11400000, guid: b3f2054e9883b47478472498c4d3656f, type: 2}
+  countdownSound: {fileID: 11400000, guid: f4b5fc72758fd6347987529d0742f8b0, type: 2}
+  raceStartSound: {fileID: 11400000, guid: c4a3a2c35d4442a4a8a41950aae21f06, type: 2}
+  spectatorChangeSound: {fileID: 11400000, guid: b3f2054e9883b47478472498c4d3656f, type: 2}
 --- !u!4 &809936924
 Transform:
   m_ObjectHideFlags: 0
@@ -7019,7 +7020,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #61
+      value: Checkpoint #57
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7428,7 +7429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #5
+      value: Checkpoint #1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7564,7 +7565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #69
+      value: Checkpoint #65
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7648,7 +7649,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #28
+      value: Checkpoint #24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7732,7 +7733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #85
+      value: Checkpoint #81
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7805,7 +7806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #73
+      value: Checkpoint #69
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8017,7 +8018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #89
+      value: Checkpoint #85
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8257,7 +8258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #51
+      value: Checkpoint #47
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8330,7 +8331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #71
+      value: Checkpoint #67
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8593,7 +8594,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #64
+      value: Checkpoint #60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8717,7 +8718,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #4
+      value: Checkpoint #0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8790,7 +8791,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #47
+      value: Checkpoint #43
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9174,7 +9175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #79
+      value: Checkpoint #75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9449,7 +9450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #13
+      value: Checkpoint #9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9661,7 +9662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #19
+      value: Checkpoint #15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9923,7 +9924,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #88
+      value: Checkpoint #84
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9985,7 +9986,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #56
+      value: Checkpoint #52
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10047,7 +10048,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #70
+      value: Checkpoint #66
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10120,7 +10121,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #77
+      value: Checkpoint #73
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10346,7 +10347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #12
+      value: Checkpoint #8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10886,7 +10887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #43
+      value: Checkpoint #39
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10948,7 +10949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #32
+      value: Checkpoint #28
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11157,7 +11158,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #63
+      value: Checkpoint #59
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11304,7 +11305,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #6
+      value: Checkpoint #2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11629,7 +11630,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #33
+      value: Checkpoint #29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11691,7 +11692,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #21
+      value: Checkpoint #17
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12266,7 +12267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #55
+      value: Checkpoint #51
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12339,7 +12340,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #22
+      value: Checkpoint #18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12412,7 +12413,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #39
+      value: Checkpoint #35
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12485,7 +12486,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #65
+      value: Checkpoint #61
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12632,7 +12633,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #3
+      value: Checkpoint #89
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12694,7 +12695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #66
+      value: Checkpoint #62
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12756,7 +12757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #76
+      value: Checkpoint #72
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12829,7 +12830,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #81
+      value: Checkpoint #77
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12902,7 +12903,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #25
+      value: Checkpoint #21
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13197,7 +13198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #10
+      value: Checkpoint #6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13760,7 +13761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #74
+      value: Checkpoint #70
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13844,7 +13845,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #72
+      value: Checkpoint #68
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13906,7 +13907,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #2
+      value: Checkpoint #88
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14218,7 +14219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #36
+      value: Checkpoint #32
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14622,7 +14623,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #60
+      value: Checkpoint #56
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14946,7 +14947,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #37
+      value: Checkpoint #33
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15188,7 +15189,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #23
+      value: Checkpoint #19
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15555,7 +15556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #54
+      value: Checkpoint #50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15628,7 +15629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #35
+      value: Checkpoint #31
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16041,7 +16042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #53
+      value: Checkpoint #49
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16114,7 +16115,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #49
+      value: Checkpoint #45
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16435,7 +16436,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #58
+      value: Checkpoint #54
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16508,7 +16509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #9
+      value: Checkpoint #5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16643,7 +16644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #87
+      value: Checkpoint #83
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16950,7 +16951,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #42
+      value: Checkpoint #38
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17229,7 +17230,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #40
+      value: Checkpoint #36
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17302,7 +17303,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #7
+      value: Checkpoint #3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17375,7 +17376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #15
+      value: Checkpoint #11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17885,7 +17886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #14
+      value: Checkpoint #10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17958,7 +17959,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #48
+      value: Checkpoint #44
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18115,7 +18116,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4912605640492063235, guid: c2582e4848f4bd84ebf846ca794b220f, type: 3}
       propertyPath: m_Name
-      value: Checkpoint #0
+      value: Checkpoint #86
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
