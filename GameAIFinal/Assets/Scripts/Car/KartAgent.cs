@@ -69,39 +69,39 @@ namespace Kart.Car
 
         public override void OnActionReceived(ActionBuffers actions)
         {
-            float forwardAmount = actions.DiscreteActions[0] switch
+            // Action 0 is throttle
+            Throttle = actions.DiscreteActions[0] switch
             {
-                0 => 0f,
-                1 => 1f,
-                2 => -1f,
+                0 => 0f, // none
+                1 => 1f, // forward
+                2 => -1f, // reverse
                 _ => 0f
             };
 
-            float turnAmount = actions.DiscreteActions[2] switch
+            // Action 1 is steering
+            Steering = actions.DiscreteActions[1] switch
             {
-                0 => 0f,
-                1 => 1f,
-                2 => -1f,
+                0 => 0f, // none
+                1 => 1f, // right 
+                2 => -1f, // left
                 _ => 0f
             };
-
-            Throttle = forwardAmount;
-            Steering = turnAmount;
         }
-
         public override void Heuristic(in ActionBuffers actionsOut)
         {
+            var discreteActions = actionsOut.DiscreteActions;
+            
+            // Throttle
             int forwardAction = 0;
             if (Input.GetKey(KeyCode.W)) forwardAction = 1;
             if (Input.GetKey(KeyCode.S)) forwardAction = 2;
+            discreteActions[0] = forwardAction;
 
+            // Steering
             int turnAction = 0;
             if (Input.GetKey(KeyCode.D)) turnAction = 1;
             if (Input.GetKey(KeyCode.A)) turnAction = 2;
-
-            var discreteActions = actionsOut.DiscreteActions;
-            discreteActions[0] = forwardAction;
-            discreteActions[2] = turnAction;
+            discreteActions[1] = turnAction;
         }
     }
 }
