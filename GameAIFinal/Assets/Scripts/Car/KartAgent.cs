@@ -25,6 +25,13 @@ namespace Kart.Car
         [SerializeField] private float velocityRewardScale = 0.0005f;
         [SerializeField] private float facingCheckpointReward = 0.0002f;
 
+        [Header("Episode Settings")] [SerializeField]
+        private float maxEpisodeTime = 180f;
+
+        private int _checkpointsThisEpisode;
+
+        private float _episodeTime;
+
         private KartController _kart;
 
         private Checkpoint _nextCheckpoint;
@@ -77,6 +84,7 @@ namespace Kart.Car
                 var reward = evt.RewardMultiplier * checkpointRewardMultiplier;
                 AddReward(reward);
                 Debug.Log($"[KartAgent] Checkpoint! +{reward:F3}");
+                _checkpointsThisEpisode++;
             }
             else
             {
@@ -95,6 +103,9 @@ namespace Kart.Car
 
         public override void OnEpisodeBegin()
         {
+            _episodeTime = 0f;
+            _checkpointsThisEpisode = 0;
+            
             // Reset position
             transform.position = spawnPos;
 
@@ -190,6 +201,16 @@ namespace Kart.Car
                 if (facingDot > 0)
                     AddReward(facingDot * facingCheckpointReward);
             }
+            
+            _episodeTime += Time.fixedDeltaTime;
+
+            if (_episodeTime >= maxEpisodeTime)
+            {
+                AddReward(-0.5f); // timeout
+                EndEpisode();
+            }
+            
+            // TODO: Reward on completion of the track
         }
 
         public override void Heuristic(in ActionBuffers actionsOut)
