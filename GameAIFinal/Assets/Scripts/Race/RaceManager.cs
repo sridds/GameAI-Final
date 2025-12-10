@@ -203,7 +203,7 @@ namespace Kart.Race
                 });
             }
 
-            DebugRacePositions();
+            // DebugRacePositions();
         }
 
         private void DebugRacePositions()

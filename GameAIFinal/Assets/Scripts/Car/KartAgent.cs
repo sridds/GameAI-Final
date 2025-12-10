@@ -27,6 +27,9 @@ namespace Kart.Car
         [Header("Episode Settings")] [SerializeField]
         private float maxEpisodeTime = 180f;
 
+        [Header("Debug Settings")] [SerializeField]
+        private bool debugLogs = false;
+
         private int _checkpointsThisEpisode;
 
         private float _episodeTime;
@@ -55,14 +58,14 @@ namespace Kart.Car
         {
             base.OnEnable();
             checkpointSensor.OnCheckpointPassed += OnCheckpointPassed;
-            wallSensor.OnApplyPenalty += AddReward;
+            wallSensor.OnApplyPenalty += OnWallPenalty;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
             checkpointSensor.OnCheckpointPassed -= OnCheckpointPassed;
-            wallSensor.OnApplyPenalty -= AddReward;
+            wallSensor.OnApplyPenalty -= OnWallPenalty;
         }
 
         public float Throttle { get; private set; }
@@ -89,6 +92,7 @@ namespace Kart.Car
                 var penalty = evt.RewardMultiplier * checkpointRewardMultiplier;
                 AddReward(penalty);
                 Debug.Log($"[KartAgent] Wrong way! {penalty:F3}");
+                EndEpisode();
             }
 
             UpdateNextCheckpoint();
@@ -137,15 +141,15 @@ namespace Kart.Car
 
                 var forwardDot = Vector3.Dot(transform.forward, dirToCheckpoint);
                 sensor.AddObservation(forwardDot); // facing the checkpoint
-                Debug.Log($"ForwardDot: {forwardDot}");
+                if (debugLogs) Debug.Log($"ForwardDot: {forwardDot}");
 
                 var signedAngle = Vector3.SignedAngle(transform.forward, dirToCheckpoint, Vector3.up);
                 sensor.AddObservation(signedAngle / 180f); // turn direction
-                Debug.Log($"SignedAngle: {signedAngle}");
+                if (debugLogs) Debug.Log($"SignedAngle: {signedAngle}");
 
                 var distance = toCheckpoint.magnitude;
                 sensor.AddObservation(Mathf.Clamp01(distance / 50f)); // distance
-                Debug.Log($"Distance: {distance}");
+                if (debugLogs) Debug.Log($"Distance: {distance}");
             }
             else
             {
@@ -156,11 +160,11 @@ namespace Kart.Car
 
             var localVelocity = transform.InverseTransformDirection(_kart.Rb.linearVelocity);
             sensor.AddObservation(localVelocity.z / 30f); // forward speed
-            Debug.Log($"LocalVelocity: {localVelocity}");
+            if (debugLogs) Debug.Log($"LocalVelocity: {localVelocity}");
             sensor.AddObservation(localVelocity.x / 15f); // lateral slide
-            Debug.Log($"Velocity: {_kart.Rb.linearVelocity}");
+            if (debugLogs) Debug.Log($"Velocity: {_kart.Rb.linearVelocity}");
             sensor.AddObservation(_kart.Rb.linearVelocity.magnitude / 30f); // total speed
-            Debug.Log($"Velocity: {_kart.Rb.linearVelocity.magnitude}");
+            if (debugLogs) Debug.Log($"Velocity: {_kart.Rb.linearVelocity.magnitude}");
         }
 
         public override void OnActionReceived(ActionBuffers actions)
@@ -206,6 +210,7 @@ namespace Kart.Car
             if (_episodeTime >= maxEpisodeTime)
             {
                 AddReward(-0.5f); // timeout
+                Debug.Log("Episode End due to timeout");
                 EndEpisode();
             }
             
