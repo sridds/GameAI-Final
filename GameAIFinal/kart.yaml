@@ -1,5 +1,5 @@
 behaviors:
-  KartRacer:
+  Kart:
     trainer_type: ppo
 
     hyperparameters:

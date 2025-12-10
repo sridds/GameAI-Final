@@ -226,7 +226,9 @@ MonoBehaviour:
   timePenaltyPerSecond: -0.001
   velocityRewardScale: 0.0005
   facingCheckpointReward: 0.0002
-  maxEpisodeTime: 180
+  randomizeSpawnPosition: 1
+  spawnRandomRadius: 1
+  maxEpisodeTime: 100
   debugLogs: 0
 --- !u!114 &4618903299002173020
 MonoBehaviour:

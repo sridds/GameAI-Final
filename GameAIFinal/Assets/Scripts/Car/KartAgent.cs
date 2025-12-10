@@ -50,7 +50,6 @@ namespace Kart.Car
 
         [Header("Sensors")] private CheckpointTrack track;
 
-
         protected override void Awake()
         {
             base.Awake();
@@ -132,11 +131,13 @@ namespace Kart.Car
             AddReward(-Mathf.Abs(penalty) * wallPenaltyMultiplier);
         }
 
-        public override void OnEpisodeBegin()
+        public void ResetPos(bool randomize = false)
         {
-            // Debug.Log("[KartAgent] Episode Begin");
-            _episodeTime = 0f;
-            _checkpointsThisEpisode = 0;
+            // if (randomize)
+            // {
+            //     var randomOffset = Random.insideUnitCircle * spawnRandomRadius;
+            //     spawnPos += new Vector3(randomOffset.x, 0f, randomOffset.y);
+            // }
 
             // Reset position
             transform.position = spawnPos;
@@ -149,6 +150,15 @@ namespace Kart.Car
 
             transform.position = spawnPos;
             transform.rotation = spawnRot;
+        }
+
+        public override void OnEpisodeBegin()
+        {
+            // Debug.Log("[KartAgent] Episode Begin");
+            _episodeTime = 0f;
+            _checkpointsThisEpisode = 0;
+
+            ResetPos();
 
             // Reset kart state
             _kart.ResetState();
