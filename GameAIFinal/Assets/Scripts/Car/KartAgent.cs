@@ -50,6 +50,8 @@ namespace Kart.Car
 
         [Header("Sensors")] private CheckpointTrack track;
 
+        private float _rewardsThisEpisode;
+
         protected override void Awake()
         {
             base.Awake();
@@ -106,22 +108,39 @@ namespace Kart.Car
             if (track != null && checkpointSensor != null) _nextCheckpoint = track.GetNextCheckpoint(checkpointSensor);
         }
 
+        private new void AddReward(float increment)
+        {
+            _rewardsThisEpisode += increment;
+            base.AddReward(increment);
+        }
+
+        private new void EndEpisode()
+        {
+            Debug.Log($"Episode reward: {_rewardsThisEpisode:F2}");
+            base.EndEpisode();
+        }
+
         private void OnCheckpointPassed(CheckpointPassedEvent evt)
         {
             if (evt.IsForward)
             {
                 var reward = evt.RewardMultiplier * checkpointRewardMultiplier;
                 AddReward(reward);
-                Debug.Log($"[KartAgent] Checkpoint! +{reward:F3}");
                 _checkpointsThisEpisode++;
+                if (_checkpointsThisEpisode >= track.CheckpointCount)
+                {
+                    Debug.Log("Finished track!");
+                    AddReward(2f);
+                    EndEpisode();
+                }
             }
             else
             {
                 var penalty = evt.RewardMultiplier * checkpointRewardMultiplier;
                 AddReward(penalty);
-                Debug.Log($"[KartAgent] Wrong way! {penalty:F3}");
                 EndEpisode();
             }
+            
 
             UpdateNextCheckpoint();
         }
@@ -131,14 +150,8 @@ namespace Kart.Car
             AddReward(-Mathf.Abs(penalty) * wallPenaltyMultiplier);
         }
 
-        public void ResetPos(bool randomize = false)
+        public void ResetPosition(bool randomize = false)
         {
-            // if (randomize)
-            // {
-            //     var randomOffset = Random.insideUnitCircle * spawnRandomRadius;
-            //     spawnPos += new Vector3(randomOffset.x, 0f, randomOffset.y);
-            // }
-
             // Reset position
             transform.position = spawnPos;
 
@@ -154,11 +167,11 @@ namespace Kart.Car
 
         public override void OnEpisodeBegin()
         {
-            // Debug.Log("[KartAgent] Episode Begin");
             _episodeTime = 0f;
             _checkpointsThisEpisode = 0;
+            _rewardsThisEpisode = 0;
 
-            ResetPos();
+            ResetPosition();
 
             // Reset kart state
             _kart.ResetState();
@@ -255,10 +268,8 @@ namespace Kart.Car
                 Debug.Log("Episode End due to timeout");
                 EndEpisode();
             }
-
-            // TODO: Reward on completion of the track
         }
-
+        
         public override void Heuristic(in ActionBuffers actionsOut)
         {
             var discreteActions = actionsOut.DiscreteActions;
