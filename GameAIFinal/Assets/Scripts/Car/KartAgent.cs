@@ -1,9 +1,7 @@
-﻿using System;
-using Kart.Track;
+﻿using Kart.Track;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -13,17 +11,27 @@ namespace Kart.Car
     [RequireComponent(typeof(KartController))]
     public class KartAgent : Agent, IKartInput
     {
-        [FormerlySerializedAs("wallBumper")] [SerializeField] private WallSensor wallSensor;
+        [FormerlySerializedAs("wallBumper")] [SerializeField]
+        private WallSensor wallSensor;
+
         [SerializeField] private CheckpointSensor checkpointSensor;
         // private Transform spawnPosition;
 
+        [Header("Spawn Settings")] [SerializeField]
+        private Transform spawnPoint;
+        [SerializeField] private bool randomizeSpawnPosition = false;
+        [SerializeField] private float spawnRandomRadius = 2f;
+
         private KartController _kart;
+
+        private Rigidbody _rb;
 
         protected override void Awake()
         {
             base.Awake();
             _kart = GetComponent<KartController>();
             _kart.SetInputSource(this);
+            _rb = GetComponent<Rigidbody>();
         }
 
         protected override void OnEnable()
@@ -40,26 +48,43 @@ namespace Kart.Car
             wallSensor.OnApplyPenalty -= AddReward;
         }
 
-        private void OnCheckpointPassed(CheckpointPassedEvent checkpointPassedEvent)
-        {
-            AddReward(checkpointPassedEvent.RewardMultiplier);
-        }
-
         public float Throttle { get; private set; }
         public float Steering { get; private set; }
         public bool IsBraking => false;
         public bool IsDrifting => false;
 
+        private void OnCheckpointPassed(CheckpointPassedEvent checkpointPassedEvent)
+        {
+            AddReward(checkpointPassedEvent.RewardMultiplier);
+        }
+
         public override void OnEpisodeBegin()
         {
-            // Vector3 pos = spawnPosition.position + new Vector3(
-            //     Random.Range(-5f, 5f),
-            //     0f,
-            //     Random.Range(-5f, 5f)
-            // );
-            // transform.position = pos;
-            // transform.forward = spawnPosition.forward;
+            // Reset position
+            var spawnPos = spawnPoint != null ? spawnPoint.position : transform.position;
+            var spawnRot = spawnPoint != null ? spawnPoint.rotation : transform.rotation;
+
+            if (randomizeSpawnPosition && spawnPoint != null)
+            {
+                var randomOffset = Random.insideUnitCircle * spawnRandomRadius;
+                spawnPos += new Vector3(randomOffset.x, 0f, randomOffset.y);
+            }
+
+            // Reset rigidbody
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            _rb.position = spawnPos;
+            _rb.rotation = spawnRot;
+
+            transform.position = spawnPos;
+            transform.rotation = spawnRot;
+
+            // Reset kart state
             _kart.ResetState();
+
+            // Reset checkpoint sensor
+            if (checkpointSensor != null)
+                checkpointSensor.Reset();
         }
 
         public override void CollectObservations(VectorSensor sensor)
@@ -87,18 +112,19 @@ namespace Kart.Car
                 _ => 0f
             };
         }
+
         public override void Heuristic(in ActionBuffers actionsOut)
         {
             var discreteActions = actionsOut.DiscreteActions;
-            
+
             // Throttle
-            int forwardAction = 0;
+            var forwardAction = 0;
             if (Input.GetKey(KeyCode.W)) forwardAction = 1;
             if (Input.GetKey(KeyCode.S)) forwardAction = 2;
             discreteActions[0] = forwardAction;
 
             // Steering
-            int turnAction = 0;
+            var turnAction = 0;
             if (Input.GetKey(KeyCode.D)) turnAction = 1;
             if (Input.GetKey(KeyCode.A)) turnAction = 2;
             discreteActions[1] = turnAction;
