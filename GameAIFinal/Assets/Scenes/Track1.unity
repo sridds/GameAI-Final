@@ -6881,7 +6881,7 @@ MonoBehaviour:
   spawnRandomly: 1
   trainingMode: 1
   trainingSpawnPoint: {fileID: 369783952}
-  trainingRacerDuplicates: 3
+  trainingRacerDuplicates: 5
   trainingSpawnRadius: 2.8
 --- !u!114 &809936923
 MonoBehaviour:
