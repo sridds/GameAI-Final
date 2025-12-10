@@ -17,12 +17,14 @@ namespace Kart.Car
         [SerializeField] private CheckpointSensor checkpointSensor;
         // private Transform spawnPosition;
 
-        [Header("Spawn Settings")] [SerializeField]
-        private Transform spawnPoint;
-        [SerializeField] private bool randomizeSpawnPosition = false;
-        [SerializeField] private float spawnRandomRadius = 2f;
+        private Vector3 spawnPos;
+        Quaternion spawnRot;
+
+        [Header("Sensors")] [SerializeField] private CheckpointTrack track;
 
         private KartController _kart;
+
+        private Checkpoint _nextCheckpoint;
 
         private Rigidbody _rb;
 
@@ -32,6 +34,8 @@ namespace Kart.Car
             _kart = GetComponent<KartController>();
             _kart.SetInputSource(this);
             _rb = GetComponent<Rigidbody>();
+            spawnPos = transform.position;
+            spawnRot = transform.rotation;
         }
 
         protected override void OnEnable()
@@ -53,6 +57,11 @@ namespace Kart.Car
         public bool IsBraking => false;
         public bool IsDrifting => false;
 
+        private void UpdateNextCheckpoint()
+        {
+            if (track != null && checkpointSensor != null) _nextCheckpoint = track.GetNextCheckpoint(checkpointSensor);
+        }
+
         private void OnCheckpointPassed(CheckpointPassedEvent checkpointPassedEvent)
         {
             AddReward(checkpointPassedEvent.RewardMultiplier);
@@ -61,14 +70,7 @@ namespace Kart.Car
         public override void OnEpisodeBegin()
         {
             // Reset position
-            var spawnPos = spawnPoint != null ? spawnPoint.position : transform.position;
-            var spawnRot = spawnPoint != null ? spawnPoint.rotation : transform.rotation;
-
-            if (randomizeSpawnPosition && spawnPoint != null)
-            {
-                var randomOffset = Random.insideUnitCircle * spawnRandomRadius;
-                spawnPos += new Vector3(randomOffset.x, 0f, randomOffset.y);
-            }
+            transform.position = spawnPos;
 
             // Reset rigidbody
             _rb.linearVelocity = Vector3.zero;
@@ -85,11 +87,44 @@ namespace Kart.Car
             // Reset checkpoint sensor
             if (checkpointSensor != null)
                 checkpointSensor.Reset();
+
+            UpdateNextCheckpoint();
         }
 
+        // 6 Observations
         public override void CollectObservations(VectorSensor sensor)
         {
-            // TODO: Make agent aware of direction to next checkpoint (dot product)
+            if (_nextCheckpoint != null)
+            {
+                var toCheckpoint = _nextCheckpoint.Col.bounds.center - transform.position;
+                var dirToCheckpoint = toCheckpoint.normalized;
+
+                var forwardDot = Vector3.Dot(transform.forward, dirToCheckpoint);
+                sensor.AddObservation(forwardDot); // facing the checkpoint
+                Debug.Log($"ForwardDot: {forwardDot}");
+
+                var signedAngle = Vector3.SignedAngle(transform.forward, dirToCheckpoint, Vector3.up);
+                sensor.AddObservation(signedAngle / 180f); // turn direction
+                Debug.Log($"SignedAngle: {signedAngle}");
+
+                var distance = toCheckpoint.magnitude;
+                sensor.AddObservation(Mathf.Clamp01(distance / 50f)); // distance
+                Debug.Log($"Distance: {distance}");
+            }
+            else
+            {
+                sensor.AddObservation(0f);
+                sensor.AddObservation(0f);
+                sensor.AddObservation(0f);
+            }
+
+            var localVelocity = transform.InverseTransformDirection(_rb.linearVelocity);
+            sensor.AddObservation(localVelocity.z / 30f); // forward speed
+            Debug.Log($"LocalVelocity: {localVelocity}");
+            sensor.AddObservation(localVelocity.x / 15f); // lateral slide
+            Debug.Log($"Velocity: {_rb.linearVelocity}");
+            sensor.AddObservation(_rb.linearVelocity.magnitude / 30f); // total speed
+            Debug.Log($"Velocity: {_rb.linearVelocity.magnitude}");
         }
 
         public override void OnActionReceived(ActionBuffers actions)

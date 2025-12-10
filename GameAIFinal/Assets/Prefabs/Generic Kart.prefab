@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 1
+    VectorObservationSize: 6
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 0
@@ -234,6 +234,10 @@ MonoBehaviour:
   MaxStep: 0
   wallSensor: {fileID: 6022809284279099733}
   checkpointSensor: {fileID: 5899622828428242743}
+  spawnPoint: {fileID: 0}
+  randomizeSpawnPosition: 0
+  spawnRandomRadius: 2
+  track: {fileID: 0}
 --- !u!1 &3918445203264599927
 GameObject:
   m_ObjectHideFlags: 0
