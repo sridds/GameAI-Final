@@ -10,10 +10,12 @@ namespace Kart.Car
     [RequireComponent(typeof(KartController))]
     public class KartAgent : Agent, IKartInput
     {
+        private const float STUCK_THRESHOLD = 5f;
+        private const float STUCK_DISTANCE = 0.02f;
 
-        [Header("Sensors")] 
-        private CheckpointTrack track;
-        [FormerlySerializedAs("wallBumper")] [SerializeField] private WallSensor wallSensor;
+        [FormerlySerializedAs("wallBumper")] [SerializeField]
+        private WallSensor wallSensor;
+
         [SerializeField] private CheckpointSensor checkpointSensor;
 
         [Header("Reward Settings")] [SerializeField]
@@ -28,7 +30,7 @@ namespace Kart.Car
         private float maxEpisodeTime = 180f;
 
         [Header("Debug Settings")] [SerializeField]
-        private bool debugLogs = false;
+        private bool debugLogs;
 
         private int _checkpointsThisEpisode;
 
@@ -36,12 +38,17 @@ namespace Kart.Car
 
         private KartController _kart;
 
+        private Vector3 _lastPosition;
+
         private Checkpoint _nextCheckpoint;
+        private float _stuckTimer;
 
         // private Transform spawnPosition;
 
         private Vector3 spawnPos;
         private Quaternion spawnRot;
+
+        [Header("Sensors")] private CheckpointTrack track;
 
 
         protected override void Awake()
@@ -52,6 +59,28 @@ namespace Kart.Car
             spawnPos = transform.position;
             spawnRot = transform.rotation;
             track = FindFirstObjectByType<CheckpointTrack>();
+
+            Time.fixedDeltaTime = 0.02f;
+            Physics.simulationMode = SimulationMode.FixedUpdate;
+        }
+
+        private void FixedUpdate()
+        {
+            // if (Vector3.Distance(transform.position, _lastPosition) < STUCK_DISTANCE)
+            // {
+            //     _stuckTimer += Time.fixedDeltaTime;
+            //     if (_stuckTimer >= STUCK_THRESHOLD)
+            //     {
+            //         Debug.Log("Stuck, ending episode");
+            //         AddReward(-0.5f);
+            //         EndEpisode();
+            //     }
+            // }
+            // else
+            // {
+            //     _stuckTimer = 0f;
+            //     _lastPosition = transform.position;
+            // }
         }
 
         protected override void OnEnable()
@@ -105,10 +134,10 @@ namespace Kart.Car
 
         public override void OnEpisodeBegin()
         {
-            Debug.Log("[KartAgent] Episode Begin");
+            // Debug.Log("[KartAgent] Episode Begin");
             _episodeTime = 0f;
             _checkpointsThisEpisode = 0;
-            
+
             // Reset position
             transform.position = spawnPos;
 
@@ -129,6 +158,9 @@ namespace Kart.Car
                 checkpointSensor.Reset();
 
             UpdateNextCheckpoint();
+
+            _lastPosition = transform.position;
+            _stuckTimer = 0f;
         }
 
         // 6 Observations
@@ -204,7 +236,7 @@ namespace Kart.Car
                 if (facingDot > 0)
                     AddReward(facingDot * facingCheckpointReward);
             }
-            
+
             _episodeTime += Time.fixedDeltaTime;
 
             if (_episodeTime >= maxEpisodeTime)
@@ -213,7 +245,7 @@ namespace Kart.Car
                 Debug.Log("Episode End due to timeout");
                 EndEpisode();
             }
-            
+
             // TODO: Reward on completion of the track
         }
 
