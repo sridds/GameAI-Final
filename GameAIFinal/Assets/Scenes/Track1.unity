@@ -6860,11 +6860,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fd9ef07e12a58c428a947a3756e5acf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnMode: 1
   racerCatalogue:
   - {fileID: 11400000, guid: 4d6ef8c1e81ab4a43912c9e831e78073, type: 2}
   - {fileID: 11400000, guid: bcaff8acb433f734aa0ebecaf0f159a4, type: 2}
   - {fileID: 11400000, guid: e128fbeb2fddd634eb2fe0582019ea97, type: 2}
   - {fileID: 11400000, guid: e79fb9496be0d8b4d99e7014185faae0, type: 2}
+  playerRacer: {fileID: 11400000, guid: 4d6ef8c1e81ab4a43912c9e831e78073, type: 2}
+  spawnRandomly: 1
   orderedSpawnPoints:
   - {fileID: 45760250}
   - {fileID: 400522418}
@@ -6878,8 +6881,6 @@ MonoBehaviour:
   - {fileID: 2099154264}
   - {fileID: 1867726814}
   - {fileID: 957558883}
-  spawnRandomly: 1
-  trainingMode: 0
   trainingSpawnPoint: {fileID: 369783952}
   trainingRacerDuplicates: 5
   trainingSpawnRadius: 2.8

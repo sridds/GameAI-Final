@@ -31,16 +31,16 @@ namespace Kart.Race
             CheckpointsPassed = 0;
         }
     }
-    
+
     public class RaceManager : MonoBehaviour
     {
         public static RaceManager Instance;
         public static KartController CurrentSpectatedRacer;
 
-        [Header("Race settings")] 
+        [Header("Race settings")]
         [SerializeField] private int laps = 3;
         public int Laps => laps;
-        
+
         [Header("Tweaks")]
         [SerializeField] private float pregameTimer = 1.0f;
 
@@ -50,12 +50,12 @@ namespace Kart.Race
         [SerializeField] private Camera[] alternateCameras;
 
         [Header("Race SFX")]
-        [FormerlySerializedAs("_countdownSound")] [SerializeField] private SoundStreamSO countdownSound;
-        [FormerlySerializedAs("_raceStartSound")] [SerializeField] private SoundStreamSO raceStartSound;
-        [FormerlySerializedAs("_spectatorChangeSound")] [SerializeField] private SoundStreamSO spectatorChangeSound;
+        [FormerlySerializedAs("_countdownSound")][SerializeField] private SoundStreamSO countdownSound;
+        [FormerlySerializedAs("_raceStartSound")][SerializeField] private SoundStreamSO raceStartSound;
+        [FormerlySerializedAs("_spectatorChangeSound")][SerializeField] private SoundStreamSO spectatorChangeSound;
 
         public Dictionary<KartController, RaceParticipant> Racers = new Dictionary<KartController, RaceParticipant>();
-        
+
         public List<KartController> OrderedRacers { get; private set; } = new();
         private List<KartController> racersFixedOrder = new List<KartController>();
 
@@ -65,6 +65,7 @@ namespace Kart.Race
         private List<Camera> allCameras;
         private int currentCameraIndex;
         private ERaceState raceState;
+        private KartController playerKart; // reference to player's kart
 
         private void Awake()
         {
@@ -104,9 +105,23 @@ namespace Kart.Race
                         TotalLaps = laps
                     });
 
-                    if (participant.Laps >= laps)
+                    if (participant.Laps > laps)
                     {
-                        ChangeRaceState(ERaceState.RaceEnded);
+                        // check if this is the first finisher
+                        bool isFirstFinisher = true;
+                        foreach (var kvp in Racers)
+                        {
+                            if (kvp.Key != passingKart && kvp.Value.Laps > laps)
+                            {
+                                isFirstFinisher = false;
+                                break;
+                            }
+                        }
+
+                        if (isFirstFinisher)
+                        {
+                            ChangeRaceState(ERaceState.RaceEnded);
+                        }
                     }
                 }
             }
@@ -146,14 +161,9 @@ namespace Kart.Race
         {
             ChangeRaceState(ERaceState.Pregame);
         }
-        
+
         private void OnEnable()
         {
-            /* Disabling this for now
-            foreach (var driver in OrderedRacers)
-            {
-                driver.CpCollector.onPassedCheckpointDirection.AddListener(OnPassed);
-            }*/
             Bus<CheckpointPassedEvent>.OnEvent += OnCheckpointPassed;
         }
 
@@ -164,7 +174,7 @@ namespace Kart.Race
 
         private void Update()
         {
-            // start race by pressing mouse down
+            // manual start race by pressing mouse down
             if (Input.GetMouseButtonDown(0) && raceState == ERaceState.Pregame)
             {
                 StartRace();
@@ -177,7 +187,7 @@ namespace Kart.Race
         {
             TimeElapsed += Time.deltaTime;
 
-            // we can spectate and change cameras during race
+            // spectator controls during race
             UpdateSpectatorInput();
             UpdateCurrentSpectator();
             UpdateRaceLeaderboard();
@@ -226,7 +236,7 @@ namespace Kart.Race
 
         private void DebugRacePositions()
         {
-            Debug.Log("=== RACE POSITIONS ===");
+            Debug.Log("=== race positions ===");
 
             for (int i = 0; i < OrderedRacers.Count; i++)
             {
@@ -248,12 +258,13 @@ namespace Kart.Race
 
             // adjust index
             currentCameraIndex %= allCameras.Count;
-            if(currentCameraIndex < 0) currentCameraIndex = allCameras.Count - 1;
+            if (currentCameraIndex < 0) currentCameraIndex = allCameras.Count - 1;
 
             if (currentCameraIndex != previousIndex)
             {
                 // disable current to prepare for next
-                AudioManager.instance.PlayAudio(spectatorChangeSound);
+                if (spectatorChangeSound != null)
+                    AudioManager.instance.PlayAudio(spectatorChangeSound);
                 allCameras[previousIndex].gameObject.SetActive(false);
             }
         }
@@ -262,11 +273,40 @@ namespace Kart.Race
         {
             allCameras = new List<Camera>();
 
-            // add all cameras from racers in fixed order, disable all
+            // find player kart (first one without ml agent, or first one overall)
+            playerKart = null;
+            foreach (var kart in racersFixedOrder)
+            {
+                if (kart.GetComponent<KartAgent>() == null)
+                {
+                    playerKart = kart;
+                    break;
+                }
+            }
+
+            // fallback to first kart if no player found
+            if (playerKart == null && racersFixedOrder.Count > 0)
+            {
+                playerKart = racersFixedOrder[0];
+            }
+
+            // add player camera first, then other racer cameras
+            if (playerKart != null && playerKart.Cam != null)
+            {
+                allCameras.Add(playerKart.Cam);
+                playerKart.Cam.gameObject.SetActive(false);
+            }
+
+            // add remaining racer cameras
             for (int i = 0; i < racersFixedOrder.Count; i++)
             {
-                allCameras.Add(racersFixedOrder[i].Cam);
-                racersFixedOrder[i].Cam.gameObject.SetActive(false);
+                if (racersFixedOrder[i] == playerKart) continue; // skip player, already added
+
+                if (racersFixedOrder[i].Cam != null)
+                {
+                    allCameras.Add(racersFixedOrder[i].Cam);
+                    racersFixedOrder[i].Cam.gameObject.SetActive(false);
+                }
             }
 
             // add alternate cameras, disable all
@@ -276,14 +316,26 @@ namespace Kart.Race
                 alternateCameras[i].gameObject.SetActive(false);
             }
 
-            // activate only one overhead
-            alternateCameras[0].gameObject.SetActive(true);
+            // activate player camera by default, or first alternate if no player
+            if (playerKart != null && playerKart.Cam != null)
+            {
+                currentCameraIndex = 0; // player cam is first
+                playerKart.Cam.gameObject.SetActive(true);
+            }
+            else if (alternateCameras.Length > 0)
+            {
+                currentCameraIndex = allCameras.Count - alternateCameras.Length; // first alternate
+                alternateCameras[0].gameObject.SetActive(true);
+            }
         }
 
         private void UpdateCurrentSpectator()
         {
+            // determine which camera/racer we're spectating
+            int racerCameraCount = allCameras.Count - alternateCameras.Length;
+
             // we are on an alternate camera
-            if (currentCameraIndex >= racersFixedOrder.Count)
+            if (currentCameraIndex >= racerCameraCount)
             {
                 CurrentSpectatedRacer = null;
                 Bus<SpectatorChangeCamera>.Raise(
@@ -297,13 +349,33 @@ namespace Kart.Race
             // we are spectating a racer
             else
             {
-                CurrentSpectatedRacer = racersFixedOrder[currentCameraIndex];
+                // find which racer this camera belongs to
+                KartController spectatedKart = null;
+
+                if (currentCameraIndex == 0 && playerKart != null)
+                {
+                    spectatedKart = playerKart;
+                }
+                else
+                {
+                    // search for matching camera
+                    for (int i = 0; i < racersFixedOrder.Count; i++)
+                    {
+                        if (racersFixedOrder[i].Cam == allCameras[currentCameraIndex])
+                        {
+                            spectatedKart = racersFixedOrder[i];
+                            break;
+                        }
+                    }
+                }
+
+                CurrentSpectatedRacer = spectatedKart;
                 Bus<SpectatorChangeCamera>.Raise(
                     new SpectatorChangeCamera()
                     {
                         Race = this,
                         Camera = allCameras[currentCameraIndex],
-                        CarReference = racersFixedOrder[currentCameraIndex]
+                        CarReference = spectatedKart
                     });
             }
 
@@ -313,12 +385,13 @@ namespace Kart.Race
 
         public void InitRace()
         {
-            Debug.Log($"[{name}]: Initializing Race...");
+            Debug.Log($"[{name}]: initializing race...");
             var racers = spawner.Spawn();
 
             OrderedRacers.Clear();
             racersFixedOrder.Clear();
             Racers = new Dictionary<KartController, RaceParticipant>();
+
             foreach (var racer in racers)
             {
                 var kart = racer.GetComponent<KartController>();
@@ -327,12 +400,21 @@ namespace Kart.Race
                     OrderedRacers.Add(kart);
                     racersFixedOrder.Add(kart);
                     Racers.Add(kart, new RaceParticipant(kart));
+
+                    // initialize ai agents for gameplay
+                    var agent = kart.GetComponent<KartAgent>();
+                    if (agent != null && !agent.IsTrainingMode)
+                    {
+                        agent.InitializeForGameplay();
+                    }
                 }
                 else
                 {
-                    Debug.LogWarning("No KartController component found on racer: " + racer.name);
+                    Debug.LogWarning("no kartcontroller component found on racer: " + racer.name);
                 }
             }
+
+            Debug.Log($"initialized {Racers.Count} racers");
         }
 
         public void StartRace()
@@ -354,26 +436,45 @@ namespace Kart.Race
             yield return new WaitForSeconds(pregameTimer);
 
             // 3
-            AudioManager.instance.PlayAudio(countdownSound);
+            if (countdownSound != null)
+                AudioManager.instance.PlayAudio(countdownSound);
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { TimerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Three });
             yield return new WaitForSeconds(1.0f);
             // 2
-            AudioManager.instance.PlayAudio(countdownSound);
+            if (countdownSound != null)
+                AudioManager.instance.PlayAudio(countdownSound);
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { TimerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Two });
             yield return new WaitForSeconds(1.0f);
             // 1
-            AudioManager.instance.PlayAudio(countdownSound);
+            if (countdownSound != null)
+                AudioManager.instance.PlayAudio(countdownSound);
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { TimerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.One });
             yield return new WaitForSeconds(1.0f);
 
-            AudioManager.instance.PlayAudio(raceStartSound);
+            if (raceStartSound != null)
+                AudioManager.instance.PlayAudio(raceStartSound);
             Bus<TimerAnnouncement>.Raise(new TimerAnnouncement() { TimerAnnouncementType = TimerAnnouncement.ETimerAnnouncement.Go });
             ChangeRaceState(ERaceState.Racing);
         }
 
         public int GetCurrentLap(KartController kart)
         {
-            return Racers[kart].Laps;
+            if (Racers.ContainsKey(kart))
+                return Racers[kart].Laps;
+            return 1;
+        }
+
+        public int GetPlayerPlacement()
+        {
+            if (playerKart == null) return -1;
+
+            for (int i = 0; i < OrderedRacers.Count; i++)
+            {
+                if (OrderedRacers[i] == playerKart)
+                    return i + 1;
+            }
+
+            return -1;
         }
     }
 }

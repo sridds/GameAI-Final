@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Kart.Car
 {
-    public class PlayerInputDriver : MonoBehaviour, IKartInput
+    public class PlayerKartInput : MonoBehaviour, IKartInput
     {
         [SerializeField] private KeyCode brakeKey = KeyCode.LeftShift;
         [SerializeField] private KeyCode driftKey = KeyCode.Space;

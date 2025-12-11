@@ -14,12 +14,14 @@ namespace Kart.Car
         private const float STUCK_THRESHOLD = 5f;
         private const float STUCK_DISTANCE = 0.02f;
 
-        [FormerlySerializedAs("wallBumper")] [SerializeField]
+        [FormerlySerializedAs("wallBumper")]
+        [SerializeField]
         private WallSensor wallSensor;
 
         [SerializeField] private CheckpointSensor checkpointSensor;
 
-        [Header("Reward Settings")] [SerializeField]
+        [Header("Reward Settings")]
+        [SerializeField]
         private float checkpointRewardMultiplier = 1f;
 
         [SerializeField] private float wallPenaltyMultiplier = 1f;
@@ -27,31 +29,27 @@ namespace Kart.Car
         [SerializeField] private float velocityRewardScale = 0.0005f;
         [SerializeField] private float facingCheckpointReward = 0.0002f;
 
-        [Header("Episode Settings")] [SerializeField]
+        [Header("Episode Settings")]
+        [SerializeField]
         private float maxEpisodeTime = 180f;
 
-        [Header("Debug Settings")] [SerializeField]
+        [Header("Debug Settings")]
+        [SerializeField]
         private bool debugLogs;
 
         private int _checkpointsThisEpisode;
-
         private float _episodeTime;
-
         private KartController _kart;
-
         private Vector3 _lastPosition;
-
         private Checkpoint _nextCheckpoint;
-
         private float _rewardsThisEpisode;
         private float _stuckTimer;
-
         private Vector3 spawnPos;
         private Quaternion spawnRot;
+        private CheckpointTrack track;
 
-        [Header("Sensors")] private CheckpointTrack track;
-        
-        
+        // gameplay mode state
+        private bool _gameplayInitialized = false;
 
         protected override void Awake()
         {
@@ -60,8 +58,12 @@ namespace Kart.Car
             _kart.SetInputSource(this);
             track = FindFirstObjectByType<CheckpointTrack>();
 
-            Time.fixedDeltaTime = 0.02f;
-            Physics.simulationMode = SimulationMode.FixedUpdate;
+            // only set physics in training mode
+            if (IsTrainingMode)
+            {
+                Time.fixedDeltaTime = 0.02f;
+                Physics.simulationMode = SimulationMode.FixedUpdate;
+            }
         }
 
         private void Start()
@@ -70,37 +72,22 @@ namespace Kart.Car
             spawnRot = transform.rotation;
         }
 
-        private void FixedUpdate()
-        {
-            // if (Vector3.Distance(transform.position, _lastPosition) < STUCK_DISTANCE)
-            // {
-            //     _stuckTimer += Time.fixedDeltaTime;
-            //     if (_stuckTimer >= STUCK_THRESHOLD)
-            //     {
-            //         Debug.Log("Stuck, ending episode");
-            //         AddReward(-0.5f);
-            //         EndEpisode();
-            //     }
-            // }
-            // else
-            // {
-            //     _stuckTimer = 0f;
-            //     _lastPosition = transform.position;
-            // }
-        }
-
         protected override void OnEnable()
         {
             base.OnEnable();
-            checkpointSensor.OnCheckpointPassed += OnCheckpointPassed;
-            wallSensor.OnApplyPenalty += OnWallPenalty;
+            if (checkpointSensor != null)
+                checkpointSensor.OnCheckpointPassed += OnCheckpointPassed;
+            if (wallSensor != null)
+                wallSensor.OnApplyPenalty += OnWallPenalty;
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
-            checkpointSensor.OnCheckpointPassed -= OnCheckpointPassed;
-            wallSensor.OnApplyPenalty -= OnWallPenalty;
+            if (checkpointSensor != null)
+                checkpointSensor.OnCheckpointPassed -= OnCheckpointPassed;
+            if (wallSensor != null)
+                wallSensor.OnApplyPenalty -= OnWallPenalty;
         }
 
         public float Throttle { get; private set; }
@@ -110,19 +97,27 @@ namespace Kart.Car
 
         private void UpdateNextCheckpoint()
         {
-            if (track != null && checkpointSensor != null) _nextCheckpoint = track.GetNextCheckpoint(checkpointSensor);
+            if (track != null && checkpointSensor != null)
+                _nextCheckpoint = track.GetNextCheckpoint(checkpointSensor);
         }
 
         private new void AddReward(float increment)
         {
-            _rewardsThisEpisode += increment;
-            base.AddReward(increment);
+            // only track rewards in training mode
+            if (IsTrainingMode)
+            {
+                _rewardsThisEpisode += increment;
+                base.AddReward(increment);
+            }
         }
 
         private new void EndEpisode()
         {
-            Debug.Log($"Episode reward: {_rewardsThisEpisode:F2}");
-            base.EndEpisode();
+            if (IsTrainingMode)
+            {
+                Debug.Log($"Episode reward: {_rewardsThisEpisode:F2}");
+                base.EndEpisode();
+            }
         }
 
         private void OnCheckpointPassed(CheckpointPassedEvent evt)
@@ -132,10 +127,10 @@ namespace Kart.Car
                 var reward = evt.RewardMultiplier * checkpointRewardMultiplier;
                 AddReward(reward);
                 _checkpointsThisEpisode++;
-        
+
                 if (IsTrainingMode && _checkpointsThisEpisode >= track.CheckpointCount)
                 {
-                    Debug.Log("Finished track!");
+                    Debug.Log("finished track!");
                     AddReward(2f);
                     EndEpisode();
                 }
@@ -158,17 +153,17 @@ namespace Kart.Car
 
         public void ResetPosition(bool randomize = false)
         {
-            // Reset main transform
+            // reset main transform
             transform.position = spawnPos;
             transform.rotation = spawnRot;
 
-            // Reset rigidbody position and rotation
+            // reset rigidbody position and rotation
             _kart.Rb.position = spawnPos;
             _kart.Rb.rotation = spawnRot;
             _kart.Rb.linearVelocity = Vector3.zero;
             _kart.Rb.angularVelocity = Vector3.zero;
 
-            // Reset kart state (this will reset child transforms)
+            // reset kart state (this will reset child transforms)
             _kart.ResetState();
         }
 
@@ -180,7 +175,7 @@ namespace Kart.Car
 
             ResetPosition();
 
-            // Reset checkpoint sensor
+            // reset checkpoint sensor
             if (checkpointSensor != null)
                 checkpointSensor.Reset();
 
@@ -195,19 +190,19 @@ namespace Kart.Car
         {
             if (_nextCheckpoint != null)
             {
-                // Checkpoint directions
+                // checkpoint directions
                 var toCheckpoint = _nextCheckpoint.Col.bounds.center - transform.position;
                 var directionToCheckpoint = toCheckpoint.normalized;
 
-                // How much are we facing the checkpoint? (1.0 = directly facing, -1.0 = facing away)
+                // how much are we facing the checkpoint? (1.0 = directly facing, -1.0 = facing away)
                 var facingAlignment = Vector3.Dot(transform.forward, directionToCheckpoint);
                 sensor.AddObservation(facingAlignment);
 
-                // Which way should we turn? (positive = turn right, negative = turn left)
+                // which way should we turn? (positive = turn right, negative = turn left)
                 var turnDirection = Vector3.SignedAngle(transform.forward, directionToCheckpoint, Vector3.up);
-                sensor.AddObservation(turnDirection / 180f); // Normalize to [-1, 1]
+                sensor.AddObservation(turnDirection / 180f); // normalize to [-1, 1]
 
-                // How far away is the checkpoint? (normalized)
+                // how far away is the checkpoint? (normalized)
                 var distanceToCheckpoint = toCheckpoint.magnitude;
                 sensor.AddObservation(Mathf.Clamp01(distanceToCheckpoint / 50f));
             }
@@ -218,17 +213,17 @@ namespace Kart.Car
                 sensor.AddObservation(0f);
             }
 
-            // Velocity
+            // velocity
             var localVelocity = transform.InverseTransformDirection(_kart.Rb.linearVelocity);
 
-            sensor.AddObservation(localVelocity.z / 30f); // Forward/backward speed
-            sensor.AddObservation(localVelocity.x / 15f); // Left/right sliding
-            sensor.AddObservation(_kart.Rb.linearVelocity.magnitude / 30f); // Total speed
+            sensor.AddObservation(localVelocity.z / 30f); // forward/backward speed
+            sensor.AddObservation(localVelocity.x / 15f); // left/right sliding
+            sensor.AddObservation(_kart.Rb.linearVelocity.magnitude / 30f); // total speed
         }
 
         public override void OnActionReceived(ActionBuffers actions)
         {
-            // Action 0 is throttle
+            // action 0 is throttle
             Throttle = actions.DiscreteActions[0] switch
             {
                 0 => 0f, // none
@@ -237,7 +232,7 @@ namespace Kart.Car
                 _ => 0f
             };
 
-            // Action 1 is steering
+            // action 1 is steering
             Steering = actions.DiscreteActions[1] switch
             {
                 0 => 0f, // none
@@ -246,31 +241,35 @@ namespace Kart.Car
                 _ => 0f
             };
 
-            // Time penalty to encourage speed
-            AddReward(timePenaltyPerSecond);
-
-            // Reward for moving toward checkpoint
-            if (_nextCheckpoint != null)
+            // training mode rewards
+            if (IsTrainingMode)
             {
-                var toCheckpoint = (_nextCheckpoint.Col.bounds.center - transform.position).normalized;
-                var velocityToward = Vector3.Dot(_kart.Rb.linearVelocity, toCheckpoint);
+                // time penalty to encourage speed
+                AddReward(timePenaltyPerSecond);
 
-                if (velocityToward > 0)
-                    AddReward(velocityToward * velocityRewardScale);
+                // reward for moving toward checkpoint
+                if (_nextCheckpoint != null)
+                {
+                    var toCheckpoint = (_nextCheckpoint.Col.bounds.center - transform.position).normalized;
+                    var velocityToward = Vector3.Dot(_kart.Rb.linearVelocity, toCheckpoint);
 
-                // Small reward for facing checkpoint
-                var facingDot = Vector3.Dot(transform.forward, toCheckpoint);
-                if (facingDot > 0)
-                    AddReward(facingDot * facingCheckpointReward);
-            }
+                    if (velocityToward > 0)
+                        AddReward(velocityToward * velocityRewardScale);
 
-            _episodeTime += Time.fixedDeltaTime;
+                    // small reward for facing checkpoint
+                    var facingDot = Vector3.Dot(transform.forward, toCheckpoint);
+                    if (facingDot > 0)
+                        AddReward(facingDot * facingCheckpointReward);
+                }
 
-            if (_episodeTime >= maxEpisodeTime)
-            {
-                AddReward(-0.5f); // timeout
-                Debug.Log("Episode End due to timeout");
-                EndEpisode();
+                _episodeTime += Time.fixedDeltaTime;
+
+                if (_episodeTime >= maxEpisodeTime)
+                {
+                    AddReward(-0.5f); // timeout
+                    Debug.Log("episode end due to timeout");
+                    EndEpisode();
+                }
             }
         }
 
@@ -278,17 +277,30 @@ namespace Kart.Car
         {
             var discreteActions = actionsOut.DiscreteActions;
 
-            // Throttle
+            // throttle
             var forwardAction = 0;
             if (Input.GetKey(KeyCode.W)) forwardAction = 1;
             if (Input.GetKey(KeyCode.S)) forwardAction = 2;
             discreteActions[0] = forwardAction;
 
-            // Steering
+            // steering
             var turnAction = 0;
             if (Input.GetKey(KeyCode.D)) turnAction = 1;
             if (Input.GetKey(KeyCode.A)) turnAction = 2;
             discreteActions[1] = turnAction;
+        }
+
+        // called by race manager when race starts
+        public void InitializeForGameplay()
+        {
+            if (_gameplayInitialized) return;
+
+            _gameplayInitialized = true;
+            UpdateNextCheckpoint();
+
+            // still need initial setup
+            if (checkpointSensor != null)
+                checkpointSensor.Reset();
         }
     }
 }
