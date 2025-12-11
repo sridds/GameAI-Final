@@ -25,6 +25,11 @@ namespace Kart.Track
             return checkpoints[(index % checkpoints.Count + checkpoints.Count) % checkpoints.Count];
         }
 
+        public int GetCheckpointIndex(Checkpoint checkpoint)
+        {
+            return checkpoints.IndexOf(checkpoint);
+        }
+
         public float GetLapProgress(CheckpointSensor sensor)
         {
             return checkpoints.Count == 0

@@ -99,13 +99,14 @@ namespace Kart
 
         public void UpdateSpectatorUI(SpectatorChangeCamera evt)
         {
-            // if the spectator was updated and there is no racer referenced, disable non-relevant UI
-            if(evt.CarReference == null)
+            // if the spectator was updated and there is no racer referenced, disable non-relevant ui
+            if (evt.CarReference == null)
             {
                 _placementHolder.gameObject.SetActive(false);
                 _lapHolder.gameObject.SetActive(false);
+                _placementText.text = "";
             }
-            // reenable UI if its relevant to the race
+            // reenable ui if its relevant to the race
             else
             {
                 _placementHolder.gameObject.SetActive(true);
@@ -113,6 +114,16 @@ namespace Kart
 
                 // set lap text
                 _lapText.text = $"Lap: {evt.Race.GetCurrentLap(evt.CarReference)}/{evt.Race.Laps}";
+
+                // immediately set placement for the new spectated racer
+                int placement = evt.Race.OrderedRacers.IndexOf(evt.CarReference) + 1;
+                string placeStr = placement.ToString();
+                if (placement == 1) placeStr += "st";
+                else if (placement == 2) placeStr += "nd";
+                else if (placement == 3) placeStr += "rd";
+                else placeStr += "th";
+
+                _placementText.text = placeStr;
             }
 
             _spectatorTargetText.text = "Spectating: ";
@@ -133,19 +144,20 @@ namespace Kart
         /// </summary>
         public void UpdatePlacement(RacerPlacementUpdated evt)
         {
-            if (evt.RacerReference != RaceManager.CurrentSpectatedRacer) return;
+            // compare racer ids
+            if (RaceManager.CurrentSpectatedRacer == null ||
+                evt.RacerReference != RaceManager.CurrentSpectatedRacer.RacerID) return;
 
             string placeStr = evt.Placement.ToString();
 
-            // Create placement string
+            // create placement string
             if (evt.Placement == 1) placeStr += "st";
             else if (evt.Placement == 2) placeStr += "nd";
             else if (evt.Placement == 3) placeStr += "rd";
             else placeStr += "th";
 
-            // stop current animation before playing new one
-            if(currentPlacementCoroutine != null) StopCoroutine(currentPlacementCoroutine);
-            currentPlacementCoroutine = StartCoroutine(IUpdatePlacement(placeStr));
+            // temp just setting text no anim cause it breaky
+            _placementText.text = placeStr;
         }
 
         /// <summary>

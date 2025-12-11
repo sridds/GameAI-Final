@@ -26,7 +26,7 @@ namespace Kart.Race
         public RaceParticipant(KartController kart)
         {
             this.kart = kart;
-            Laps = 0;
+            Laps = 1;
             CheckpointsPassedInLap = 0;
             CheckpointsPassed = 0;
         }
@@ -57,7 +57,8 @@ namespace Kart.Race
         public Dictionary<KartController, RaceParticipant> Racers = new Dictionary<KartController, RaceParticipant>();
         
         public List<KartController> OrderedRacers { get; private set; } = new();
-        
+        private List<KartController> racersFixedOrder = new List<KartController>();
+
         public float TimeElapsed { get; private set; }
         public ERaceState RaceState { get; private set; }
 
@@ -73,7 +74,7 @@ namespace Kart.Race
             InitializeCameras();
 
             CurrentSpectatedRacer = null;
-            currentCameraIndex = OrderedRacers.Count;
+            currentCameraIndex = racersFixedOrder.Count;
         }
 
         private void OnCheckpointPassed(CheckpointPassedEvent evt)
@@ -106,6 +107,36 @@ namespace Kart.Race
                     if (participant.Laps >= laps)
                     {
                         ChangeRaceState(ERaceState.RaceEnded);
+                    }
+                }
+            }
+            // going backwards
+            else
+            {
+                participant.CheckpointsPassed--;
+                participant.CheckpointsPassedInLap--;
+
+                // if they went backward past the start line of their current lap
+                if (participant.CheckpointsPassedInLap < 0)
+                {
+                    // only decrement lap if they have completed at least one lap
+                    if (participant.Laps > 1)
+                    {
+                        participant.Laps--;
+                        participant.CheckpointsPassedInLap = track.CheckpointCount - 1;
+
+                        // lap update event
+                        Bus<RacerLapUpdated>.Raise(new RacerLapUpdated()
+                        {
+                            Racer = passingKart,
+                            CurrentLap = participant.Laps,
+                            TotalLaps = laps
+                        });
+                    }
+                    else
+                    {
+                        // clamp at 0 if theyre on lap 1
+                        participant.CheckpointsPassedInLap = 0;
                     }
                 }
             }
@@ -154,46 +185,35 @@ namespace Kart.Race
 
         private void UpdateRaceLeaderboard()
         {
-            //sort racers by: laps, checkpoints in lap, distance to next checkpoint
+            // sort by total progress: higher lap = better, higher checkpoints in lap = better, closer to next checkpoint = better
             OrderedRacers.Sort((a, b) =>
             {
                 var participantA = Racers[a];
                 var participantB = Racers[b];
 
-                // laps sort
-                if (participantA.Laps != participantB.Laps)
-                {
-                    return participantB.Laps.CompareTo(participantA.Laps);
-                }
+                // compare laps first
+                int lapCompare = participantB.Laps.CompareTo(participantA.Laps);
+                if (lapCompare != 0) return lapCompare;
 
-                // checkpoints in current lap sort
-                if (participantA.CheckpointsPassedInLap != participantB.CheckpointsPassedInLap)
-                {
-                    return participantB.CheckpointsPassedInLap.CompareTo(participantA.CheckpointsPassedInLap);
-                }
+                // same lap, compare checkpoints passed in this lap
+                int cpCompare = participantB.CheckpointsPassedInLap.CompareTo(participantA.CheckpointsPassedInLap);
+                if (cpCompare != 0) return cpCompare;
 
-                // distane to next checkpoint sort
+                // same checkpoint progress compare distance to next checkpoint
                 var sensorA = a.GetComponent<CheckpointSensor>();
                 var sensorB = b.GetComponent<CheckpointSensor>();
-
                 if (sensorA == null || sensorB == null) return 0;
 
                 var nextCheckpointA = track.GetNextCheckpoint(sensorA);
                 var nextCheckpointB = track.GetNextCheckpoint(sensorB);
-
                 if (nextCheckpointA == null || nextCheckpointB == null) return 0;
-
-                // racers on different checkpoints
                 if (nextCheckpointA != nextCheckpointB) return 0;
 
-                // calculate distance to next checkpoint
-                var distA = Vector3.Distance(a.transform.position, nextCheckpointA.Col.bounds.center);
-                var distB = Vector3.Distance(b.transform.position, nextCheckpointB.Col.bounds.center);
-
+                float distA = Vector3.Distance(a.transform.position, nextCheckpointA.Col.bounds.center);
+                float distB = Vector3.Distance(b.transform.position, nextCheckpointB.Col.bounds.center);
                 return distA.CompareTo(distB);
             });
 
-            // raise placement events for changed pos
             for (int i = 0; i < OrderedRacers.Count; i++)
             {
                 Bus<RacerPlacementUpdated>.Raise(new RacerPlacementUpdated()
@@ -202,8 +222,6 @@ namespace Kart.Race
                     RacerReference = OrderedRacers[i].RacerID
                 });
             }
-
-            // DebugRacePositions();
         }
 
         private void DebugRacePositions()
@@ -240,45 +258,15 @@ namespace Kart.Race
             }
         }
 
-        private void UpdateCurrentSpectator()
-        {
-            // we are on an alternate camera
-            if(currentCameraIndex >= OrderedRacers.Count)
-            {
-                CurrentSpectatedRacer = null;
-                Bus<SpectatorChangeCamera>.Raise(
-                    new SpectatorChangeCamera()
-                    {
-                        Race = this,
-                        Camera = allCameras[currentCameraIndex], CarReference = null
-                    });
-            }
-            // we are spectating a racer
-            else
-            {
-                CurrentSpectatedRacer = OrderedRacers[currentCameraIndex];
-                Bus<SpectatorChangeCamera>.Raise(
-                    new SpectatorChangeCamera()
-                    {
-                        Race = this,
-                        Camera = allCameras[currentCameraIndex], CarReference = OrderedRacers[currentCameraIndex]
-                    });
-            }
-
-            // set the current camera active
-            allCameras[currentCameraIndex].gameObject.SetActive(true);
-
-        }
-
         private void InitializeCameras()
         {
             allCameras = new List<Camera>();
 
-            // add all cameras from racers, disable all
-            for (int i = 0; i < OrderedRacers.Count; i++)
+            // add all cameras from racers in fixed order, disable all
+            for (int i = 0; i < racersFixedOrder.Count; i++)
             {
-                allCameras.Add(OrderedRacers[i].Cam);
-                OrderedRacers[i].Cam.gameObject.SetActive(false);
+                allCameras.Add(racersFixedOrder[i].Cam);
+                racersFixedOrder[i].Cam.gameObject.SetActive(false);
             }
 
             // add alternate cameras, disable all
@@ -291,13 +279,45 @@ namespace Kart.Race
             // activate only one overhead
             alternateCameras[0].gameObject.SetActive(true);
         }
-        
+
+        private void UpdateCurrentSpectator()
+        {
+            // we are on an alternate camera
+            if (currentCameraIndex >= racersFixedOrder.Count)
+            {
+                CurrentSpectatedRacer = null;
+                Bus<SpectatorChangeCamera>.Raise(
+                    new SpectatorChangeCamera()
+                    {
+                        Race = this,
+                        Camera = allCameras[currentCameraIndex],
+                        CarReference = null
+                    });
+            }
+            // we are spectating a racer
+            else
+            {
+                CurrentSpectatedRacer = racersFixedOrder[currentCameraIndex];
+                Bus<SpectatorChangeCamera>.Raise(
+                    new SpectatorChangeCamera()
+                    {
+                        Race = this,
+                        Camera = allCameras[currentCameraIndex],
+                        CarReference = racersFixedOrder[currentCameraIndex]
+                    });
+            }
+
+            // set the current camera active
+            allCameras[currentCameraIndex].gameObject.SetActive(true);
+        }
+
         public void InitRace()
         {
             Debug.Log($"[{name}]: Initializing Race...");
             var racers = spawner.Spawn();
-            
+
             OrderedRacers.Clear();
+            racersFixedOrder.Clear();
             Racers = new Dictionary<KartController, RaceParticipant>();
             foreach (var racer in racers)
             {
@@ -305,6 +325,7 @@ namespace Kart.Race
                 if (kart != null)
                 {
                     OrderedRacers.Add(kart);
+                    racersFixedOrder.Add(kart);
                     Racers.Add(kart, new RaceParticipant(kart));
                 }
                 else
