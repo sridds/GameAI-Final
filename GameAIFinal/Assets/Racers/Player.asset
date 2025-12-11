@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de5636be57d7b704b98dc1e957a737d6, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: 
+  racerName: Mario
+  minimapIcon: {fileID: 339457741, guid: dacc37a7b6bb9ca4e9d4caeadf8a7650, type: 3}
+  kartPrefab: {fileID: 3463171613152343711, guid: 74e53472776f1114ab1b1f95da449a97, type: 3}

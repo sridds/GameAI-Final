@@ -96,11 +96,6 @@ namespace Kart.Race
 
                 playerInstance.name = playerRacer.racerName + " (Player)";
 
-                // remove ml agent if exists, add player input
-                var agent = playerInstance.GetComponent<KartAgent>();
-                if (agent != null)
-                    Destroy(agent);
-
                 var playerInput = playerInstance.GetComponent<PlayerKartInput>();
                 if (playerInput == null)
                     playerInput = playerInstance.gameObject.AddComponent<PlayerKartInput>();

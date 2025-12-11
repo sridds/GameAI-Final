@@ -1,4 +1,5 @@
-﻿using Kart.Track;
+﻿using Kart.Race;
+using Kart.Track;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
@@ -223,6 +224,17 @@ namespace Kart.Car
 
         public override void OnActionReceived(ActionBuffers actions)
         {
+            // gameplay mode: dont accept actions until race has started
+            if (!IsTrainingMode)
+            {
+                if (RaceManager.Instance == null || !RaceManager.Instance.HasRaceStarted())
+                {
+                    Throttle = 0f;
+                    Steering = 0f;
+                    return;
+                }
+            }
+
             // action 0 is throttle
             Throttle = actions.DiscreteActions[0] switch
             {
@@ -290,7 +302,7 @@ namespace Kart.Car
             discreteActions[1] = turnAction;
         }
 
-        // called by race manager when race starts
+        // called by race manager when race starts (gameplay mode only)
         public void InitializeForGameplay()
         {
             if (_gameplayInitialized) return;
@@ -298,7 +310,7 @@ namespace Kart.Car
             _gameplayInitialized = true;
             UpdateNextCheckpoint();
 
-            // still need initial setup
+            // in gameplay mode, we dont use episodes but still need initial setup
             if (checkpointSensor != null)
                 checkpointSensor.Reset();
         }

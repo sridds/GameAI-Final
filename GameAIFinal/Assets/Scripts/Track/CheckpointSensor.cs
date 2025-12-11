@@ -52,6 +52,9 @@ namespace Kart.Track
 
             if (passedForward)
             {
+                if (LastCheckpointPassedForward == null && cp.name != "Checkpoint #0")
+                    return;
+
                 CheckpointsPassed++;
                 LastCheckpointPassedForward = cp;
 
