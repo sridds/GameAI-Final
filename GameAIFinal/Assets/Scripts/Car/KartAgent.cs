@@ -186,25 +186,26 @@ namespace Kart.Car
             _stuckTimer = 0f;
         }
 
-        // 6 Observations
+        // 6 total observations about the kart's state and environment
         public override void CollectObservations(VectorSensor sensor)
         {
             if (_nextCheckpoint != null)
             {
+                // Checkpoint directions
                 var toCheckpoint = _nextCheckpoint.Col.bounds.center - transform.position;
-                var dirToCheckpoint = toCheckpoint.normalized;
+                var directionToCheckpoint = toCheckpoint.normalized;
 
-                var forwardDot = Vector3.Dot(transform.forward, dirToCheckpoint);
-                sensor.AddObservation(forwardDot); // facing the checkpoint
-                if (debugLogs) Debug.Log($"ForwardDot: {forwardDot}");
+                // How much are we facing the checkpoint? (1.0 = directly facing, -1.0 = facing away)
+                var facingAlignment = Vector3.Dot(transform.forward, directionToCheckpoint);
+                sensor.AddObservation(facingAlignment);
 
-                var signedAngle = Vector3.SignedAngle(transform.forward, dirToCheckpoint, Vector3.up);
-                sensor.AddObservation(signedAngle / 180f); // turn direction
-                if (debugLogs) Debug.Log($"SignedAngle: {signedAngle}");
+                // Which way should we turn? (positive = turn right, negative = turn left)
+                var turnDirection = Vector3.SignedAngle(transform.forward, directionToCheckpoint, Vector3.up);
+                sensor.AddObservation(turnDirection / 180f); // Normalize to [-1, 1]
 
-                var distance = toCheckpoint.magnitude;
-                sensor.AddObservation(Mathf.Clamp01(distance / 50f)); // distance
-                if (debugLogs) Debug.Log($"Distance: {distance}");
+                // How far away is the checkpoint? (normalized)
+                var distanceToCheckpoint = toCheckpoint.magnitude;
+                sensor.AddObservation(Mathf.Clamp01(distanceToCheckpoint / 50f));
             }
             else
             {
@@ -213,13 +214,12 @@ namespace Kart.Car
                 sensor.AddObservation(0f);
             }
 
+            // Velocity
             var localVelocity = transform.InverseTransformDirection(_kart.Rb.linearVelocity);
-            sensor.AddObservation(localVelocity.z / 30f); // forward speed
-            if (debugLogs) Debug.Log($"LocalVelocity: {localVelocity}");
-            sensor.AddObservation(localVelocity.x / 15f); // lateral slide
-            if (debugLogs) Debug.Log($"Velocity: {_kart.Rb.linearVelocity}");
-            sensor.AddObservation(_kart.Rb.linearVelocity.magnitude / 30f); // total speed
-            if (debugLogs) Debug.Log($"Velocity: {_kart.Rb.linearVelocity.magnitude}");
+
+            sensor.AddObservation(localVelocity.z / 30f); // Forward/backward speed
+            sensor.AddObservation(localVelocity.x / 15f); // Left/right sliding
+            sensor.AddObservation(_kart.Rb.linearVelocity.magnitude / 30f); // Total speed
         }
 
         public override void OnActionReceived(ActionBuffers actions)
