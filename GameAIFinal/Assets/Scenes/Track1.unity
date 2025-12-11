@@ -6958,7 +6958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5550ea0642783b049bc4c0ccddd76f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  laps: 3
+  laps: 1
   pregameTimer: 0
   spawner: {fileID: 809936922}
   track: {fileID: 243358920}
