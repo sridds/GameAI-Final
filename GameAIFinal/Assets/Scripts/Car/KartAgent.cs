@@ -10,6 +10,7 @@ namespace Kart.Car
     [RequireComponent(typeof(KartController))]
     public class KartAgent : Agent, IKartInput
     {
+        public bool IsTrainingMode = false;
         private const float STUCK_THRESHOLD = 5f;
         private const float STUCK_DISTANCE = 0.02f;
 
@@ -49,6 +50,8 @@ namespace Kart.Car
         private Quaternion spawnRot;
 
         [Header("Sensors")] private CheckpointTrack track;
+        
+        
 
         protected override void Awake()
         {
@@ -129,7 +132,8 @@ namespace Kart.Car
                 var reward = evt.RewardMultiplier * checkpointRewardMultiplier;
                 AddReward(reward);
                 _checkpointsThisEpisode++;
-                if (_checkpointsThisEpisode >= track.CheckpointCount)
+        
+                if (IsTrainingMode && _checkpointsThisEpisode >= track.CheckpointCount)
                 {
                     Debug.Log("Finished track!");
                     AddReward(2f);
@@ -140,9 +144,9 @@ namespace Kart.Car
             {
                 var penalty = evt.RewardMultiplier * checkpointRewardMultiplier;
                 AddReward(penalty);
-                EndEpisode();
+                if (IsTrainingMode)
+                    EndEpisode();
             }
-
 
             UpdateNextCheckpoint();
         }

@@ -133,7 +133,7 @@ namespace Kart
         /// </summary>
         public void UpdatePlacement(RacerPlacementUpdated evt)
         {
-            if (evt.RacerReference == RaceManager.CurrentSpectatedRacer) return;
+            if (evt.RacerReference != RaceManager.CurrentSpectatedRacer) return;
 
             string placeStr = evt.Placement.ToString();
 

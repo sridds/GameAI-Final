@@ -6879,7 +6879,7 @@ MonoBehaviour:
   - {fileID: 1867726814}
   - {fileID: 957558883}
   spawnRandomly: 1
-  trainingMode: 1
+  trainingMode: 0
   trainingSpawnPoint: {fileID: 369783952}
   trainingRacerDuplicates: 5
   trainingSpawnRadius: 2.8

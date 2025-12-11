@@ -44,6 +44,7 @@ namespace Kart.Race
                         var spawnPos = trainingSpawnPoint.position + offset * Random.Range(0f, trainingSpawnRadius);
 
                         var instance = Instantiate(prefab, spawnPos, trainingSpawnPoint.rotation);
+                        instance.GetComponent<KartAgent>().IsTrainingMode = true;
                         instance.name = t.racerName + $" {r}";
                         result.Add(instance);
                     }
@@ -57,6 +58,7 @@ namespace Kart.Race
                 if (prefab == null) continue;
 
                 var instance = Instantiate(prefab, orderedSpawnPoints[i].position, orderedSpawnPoints[i].rotation);
+                instance.GetComponent<KartAgent>().IsTrainingMode = false;
                 instance.name = racerCatalogue[i].racerName;
                 result.Add(instance);
             }
